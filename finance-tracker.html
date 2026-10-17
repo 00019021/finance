@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&display=swap" />
+<style>
+:root {
+  --bg:#F7F5F0;--surface:#FFFFFF;--border:#E4E0D8;--fg:#1A1714;--muted:#7A756C;
+  --accent:#2D6A4F;--accent-lt:#D8EDE3;--charity:#7B5EA7;--charity-lt:#EDE8F5;
+  --savings:#1A5F7A;--savings-lt:#DCF0F8;--danger:#C0392B;--danger-lt:#FCEAE8;
+  --warn:#B7791F;--warn-lt:#FEF3CD;
+  --font-display:'DM Serif Display',Georgia,serif;
+  --font-body:'DM Sans',system-ui,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#111210;--surface:#1C1C1A;--border:#2E2D2A;--fg:#F0EDE8;--muted:#8A857C;
+    --accent:#52B788;--accent-lt:#1A3328;--charity:#A78BCC;--charity-lt:#2A1F3D;
+    --savings:#4BA3C3;--savings-lt:#0F2D3D;--danger:#E57373;--danger-lt:#3D1A1A;
+    --warn:#E9A84C;--warn-lt:#3A2800;color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#111210;--surface:#1C1C1A;--border:#2E2D2A;--fg:#F0EDE8;--muted:#8A857C;
+  --accent:#52B788;--accent-lt:#1A3328;--charity:#A78BCC;--charity-lt:#2A1F3D;
+  --savings:#4BA3C3;--savings-lt:#0F2D3D;--danger:#E57373;--danger-lt:#3D1A1A;
+  --warn:#E9A84C;--warn-lt:#3A2800;color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:15px;line-height:1.6;min-height:100%;}
+[hidden]{display:none!important;}
+button{cursor:pointer;font-family:inherit;}
+input,select,textarea{font-family:inherit;font-size:inherit;}
+
+.app{max-width:900px;margin:0 auto;padding:24px max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));}
+
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;flex-wrap:wrap;gap:12px;}
+.logo{font-family:var(--font-display);font-size:28px;letter-spacing:-0.5px;color:var(--fg);}
+.logo span{color:var(--accent);font-style:italic;}
+.header-actions{display:flex;gap:8px;align-items:center;}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;border:none;font-size:14px;font-weight:500;transition:opacity .15s;}
+.btn:hover{opacity:.85;}
+.btn-primary{background:var(--accent);color:#fff;}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border);}
+.btn-edit{background:none;border:none;color:var(--muted);font-size:13px;padding:3px 8px;border-radius:6px;border:1px solid var(--border);}
+.btn-edit:hover{color:var(--fg);border-color:var(--fg);}
+
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--border);margin-bottom:28px;overflow-x:auto;}
+.tab{padding:8px 18px;border:none;background:none;color:var(--muted);font-size:14px;font-weight:500;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .15s,border-color .15s;white-space:nowrap;}
+.tab.active{color:var(--fg);border-bottom-color:var(--accent);}
+.tab:hover:not(.active){color:var(--fg);}
+
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:28px;}
+.tile{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 20px;}
+.tile-label{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:6px;}
+.tile-value{font-family:var(--font-display);font-size:22px;line-height:1.1;font-variant-numeric:tabular-nums;word-break:break-all;}
+.tile-sub{font-size:12px;color:var(--muted);margin-top:4px;}
+.tile.accent{background:var(--accent-lt);border-color:var(--accent);}
+.tile.charity{background:var(--charity-lt);border-color:var(--charity);}
+.tile.savings{background:var(--savings-lt);border-color:var(--savings);}
+.tile.danger{background:var(--danger-lt);border-color:var(--danger);}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:20px;overflow:hidden;}
+.card-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border);gap:8px;flex-wrap:wrap;}
+.card-title{font-weight:600;font-size:15px;}
+.card-body{padding:20px;}
+
+.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;align-items:end;}
+.field{display:flex;flex-direction:column;gap:4px;}
+.field label{font-size:12px;color:var(--muted);font-weight:500;}
+.field input,.field select{padding:9px 12px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--fg);font-size:14px;transition:border-color .15s;}
+.field input:focus,.field select:focus{outline:none;border-color:var(--accent);}
+.field select option{background:var(--surface);}
+
+.tx-list{display:flex;flex-direction:column;}
+.tx-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);}
+.tx-item:last-child{border-bottom:none;}
+.tx-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.tx-info{flex:1;min-width:0;}
+.tx-desc{font-weight:500;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tx-meta{font-size:12px;color:var(--muted);}
+.tx-amount{font-variant-numeric:tabular-nums;font-weight:600;font-size:14px;flex-shrink:0;text-align:right;}
+.tx-amount.out{color:var(--danger);}
+.tx-amount.in{color:var(--accent);}
+.tx-delete{background:none;border:none;color:var(--muted);font-size:16px;padding:4px;border-radius:6px;opacity:0;transition:opacity .15s;flex-shrink:0;}
+.tx-item:hover .tx-delete{opacity:1;}
+.tx-delete:hover{color:var(--danger);}
+
+.bar-chart{display:flex;gap:8px;align-items:flex-end;height:110px;}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;}
+.bar-track{width:100%;background:var(--border);border-radius:4px 4px 0 0;position:relative;height:80px;}
+.bar-fill{position:absolute;bottom:0;left:0;right:0;border-radius:4px 4px 0 0;background:var(--accent);transition:height .4s ease;}
+.bar-fill.charity{background:var(--charity);}
+.bar-fill.savings{background:var(--savings);}
+.bar-label{font-size:11px;color:var(--muted);}
+.bar-val{font-size:10px;color:var(--fg);font-variant-numeric:tabular-nums;text-align:center;min-height:14px;}
+
+.progress-row{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+.progress-header{display:flex;justify-content:space-between;font-size:13px;gap:8px;flex-wrap:wrap;}
+.progress-track{height:8px;background:var(--border);border-radius:100px;overflow:hidden;}
+.progress-fill{height:100%;border-radius:100px;background:var(--accent);transition:width .4s ease;}
+.progress-fill.charity{background:var(--charity);}
+.progress-fill.savings{background:var(--savings);}
+
+.empty{text-align:center;padding:36px 20px;color:var(--muted);font-size:14px;}
+.empty-icon{font-size:36px;margin-bottom:10px;}
+.badge{display:inline-block;padding:2px 8px;border-radius:100px;font-size:11px;font-weight:500;}
+
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;z-index:100;padding:16px;}
+.modal{background:var(--surface);border-radius:16px;padding:28px;width:100%;max-width:440px;border:1px solid var(--border);}
+.modal-title{font-family:var(--font-display);font-size:22px;margin-bottom:20px;}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:20px;}
+
+/* goal edit inline */
+.goal-edit-row{display:flex;align-items:center;gap:8px;margin-top:12px;}
+.goal-edit-row input{flex:1;padding:7px 10px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--fg);font-size:14px;}
+.goal-edit-row input:focus{outline:none;border-color:var(--accent);}
+
+.loader-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px;gap:16px;}
+.spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.loader-text{font-size:14px;color:var(--muted);}
+
+.status-dot{width:8px;height:8px;border-radius:50%;background:var(--muted);flex-shrink:0;transition:background .3s;}
+.status-dot.live{background:#34A853;}
+.status-row{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);}
+.theme-btn{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:7px 10px;font-size:16px;}
+
+/* toast */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--fg);color:var(--bg);padding:10px 20px;border-radius:100px;font-size:13px;font-weight:500;transition:transform .3s ease;z-index:200;white-space:nowrap;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+
+@media(max-width:500px){
+  .form-grid{grid-template-columns:1fr 1fr;}
+  .tile-value{font-size:18px;}
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <header class="header">
+    <div>
+      <div class="logo">Le<span>dger</span></div>
+      <div class="status-row">
+        <div class="status-dot" id="statusDot"></div>
+        <span id="statusText">Connecting…</span>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="theme-btn" id="themeBtn" title="Toggle theme">🌓</button>
+      <button class="btn btn-primary" id="openAddBtn">+ Add Entry</button>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab active" data-tab="daily">Daily</button>
+    <button class="tab" data-tab="weekly">Weekly</button>
+    <button class="tab" data-tab="monthly">Monthly</button>
+    <button class="tab" data-tab="charity">Charity</button>
+    <button class="tab" data-tab="savings">Savings</button>
+  </nav>
+
+  <div id="tab-daily"></div>
+  <div id="tab-weekly"  hidden></div>
+  <div id="tab-monthly" hidden></div>
+  <div id="tab-charity" hidden></div>
+  <div id="tab-savings" hidden></div>
+</div>
+
+<!-- Add Entry Modal -->
+<div class="overlay" id="addModal" hidden>
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-title">New Entry</div>
+    <div class="form-grid">
+      <div class="field" style="grid-column:1/-1">
+        <label for="f-desc">Description</label>
+        <input id="f-desc" type="text" placeholder="e.g. Oziq-ovqat xaridlari" maxlength="60" />
+      </div>
+      <div class="field">
+        <label for="f-amount">Miqdor (so'm)</label>
+        <input id="f-amount" type="number" min="1" step="1" placeholder="0" />
+      </div>
+      <div class="field">
+        <label for="f-type">Turi</label>
+        <select id="f-type">
+          <option value="expense">Xarajat</option>
+          <option value="charity">Xayriya</option>
+          <option value="savings">Jamg'arma</option>
+          <option value="income">Daromad</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="f-cat">Kategoriya</label>
+        <select id="f-cat">
+          <option value="food">🍔 Oziq-ovqat</option>
+          <option value="transport">🚗 Transport</option>
+          <option value="bills">💡 Kommunal</option>
+          <option value="health">💊 Salomatlik</option>
+          <option value="entertainment">🎬 Ko'ngil ochar</option>
+          <option value="shopping">🛍 Xarid</option>
+          <option value="charity">🤲 Xayriya</option>
+          <option value="savings">🏦 Jamg'arma</option>
+          <option value="income">💵 Daromad</option>
+          <option value="other">📦 Boshqa</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="f-date">Sana</label>
+        <input id="f-date" type="date" />
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" id="cancelAddBtn">Bekor qilish</button>
+      <button class="btn btn-primary" id="confirmAddBtn">Saqlash</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+<script>
+// ── Firebase ──────────────────────────────────────────────────────────
+const firebaseConfig = {
+  apiKey: "AIzaSyDsoZ0kxKd8kH6bwnZlx_GINgrZvpabKz4",
+  authDomain: "finance-tracker-5997d.firebaseapp.com",
+  projectId: "finance-tracker-5997d",
+  storageBucket: "finance-tracker-5997d.firebasestorage.app",
+  messagingSenderId: "743309260645",
+  appId: "1:743309260645:web:6dd6c532b14b47e60d138c"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+// Enable offline persistence so the app works without internet
+db.enablePersistence({ synchronizeTabs: true }).catch(() => {});
+const txCol = db.collection('transactions');
+
+// ── state ────────────────────────────────────────────────────────────
+let transactions = [];
+let currentTab   = 'daily';
+let initialized  = false;
+
+// ── goals (localStorage) ──────────────────────────────────────────────
+const DEFAULT_GOALS = { charity: 2000000, savings: 10000000, expense: 5000000 };
+let goals = { ...DEFAULT_GOALS };
+function loadGoals() {
+  try {
+    const raw = localStorage.getItem('ledger_goals_v2');
+    if (raw) goals = { ...DEFAULT_GOALS, ...JSON.parse(raw) };
+  } catch(e) {}
+}
+function saveGoals() {
+  try { localStorage.setItem('ledger_goals_v2', JSON.stringify(goals)); } catch(e) {}
+}
+loadGoals();
+
+// ── currency format ───────────────────────────────────────────────────
+function fmt(n) {
+  // UZS: space-separated thousands, e.g. "1 250 000 so'm"
+  const s = Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  return s + " so'm";
+}
+function fmtShort(n) {
+  if (n >= 1000000) return (n/1000000).toFixed(1).replace('.0','') + " mln";
+  if (n >= 1000)    return (n/1000).toFixed(0) + " ming";
+  return Math.round(n).toString();
+}
+
+// ── seed ──────────────────────────────────────────────────────────────
+async function seedExamples() {
+  const today = new Date();
+  const d = o => { const dt = new Date(today); dt.setDate(dt.getDate()-o); return dt.toISOString().slice(0,10); };
+  const examples = [
+    {desc:'Ish haqi',            amount:3500000, type:'income',   cat:'income',        date:d(0)},
+    {desc:'Oziq-ovqat xaridlari',amount:85000,  type:'expense',  cat:'food',          date:d(0)},
+    {desc:'Qahvaxona',           amount:15000,  type:'expense',  cat:'food',          date:d(0)},
+    {desc:'Taksi',               amount:20000,  type:'expense',  cat:'transport',     date:d(1)},
+    {desc:'Netflix obunasi',     amount:35000,  type:'expense',  cat:'entertainment', date:d(1)},
+    {desc:'Mahalliy yordam fondi',amount:100000, type:'charity', cat:'charity',       date:d(2)},
+    {desc:'Jamg\'arma',          amount:500000, type:'savings',  cat:'savings',       date:d(2)},
+    {desc:'Elektr energiya',     amount:120000, type:'expense',  cat:'bills',         date:d(3)},
+    {desc:'Dorixona',            amount:45000,  type:'expense',  cat:'health',        date:d(4)},
+    {desc:'Masjid sadaqasi',     amount:50000,  type:'charity',  cat:'charity',       date:d(5)},
+    {desc:'Jamg\'arma',          amount:300000, type:'savings',  cat:'savings',       date:d(7)},
+    {desc:'Restoran',            amount:95000,  type:'expense',  cat:'food',          date:d(8)},
+    {desc:'Onlayn xarid',        amount:180000, type:'expense',  cat:'shopping',      date:d(10)},
+    {desc:'Qo\'shimcha ish',     amount:800000, type:'income',   cat:'income',        date:d(12)},
+    {desc:'Qizil Yarim Oy',      amount:200000, type:'charity',  cat:'charity',       date:d(15)},
+    {desc:'Jamg\'arma',          amount:700000, type:'savings',  cat:'savings',       date:d(20)},
+    {desc:'Internet',            amount:80000,  type:'expense',  cat:'bills',         date:d(22)},
+    {desc:'Kiyim-kechak',        amount:250000, type:'expense',  cat:'shopping',      date:d(25)},
+  ];
+  const batch = db.batch();
+  examples.forEach(t => batch.set(txCol.doc(), { ...t, createdAt: firebase.firestore.FieldValue.serverTimestamp() }));
+  await batch.commit();
+}
+
+// ── Firestore listener ────────────────────────────────────────────────
+function startListener() {
+  showLoader();
+  txCol.onSnapshot(snapshot => {
+    if (!initialized && snapshot.empty) {
+      initialized = true;
+      seedExamples();
+      return;
+    }
+    initialized = true;
+    transactions = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    transactions.sort((a,b) => b.date.localeCompare(a.date));
+    setStatus(true);
+    renderTab(currentTab);
+  }, err => {
+    console.error('Firestore:', err);
+    setStatus(false);
+    if (!transactions.length) showError(err.message);
+  });
+}
+
+// ── optimistic add (no await = no freeze) ─────────────────────────────
+function addTx(data) {
+  const tempId = 'tmp_' + Math.random().toString(36).slice(2);
+  const record = { id: tempId, ...data };
+  transactions.unshift(record);
+  transactions.sort((a,b) => b.date.localeCompare(a.date));
+  renderTab(currentTab);
+  // fire-and-forget to Firestore; onSnapshot confirms with real ID
+  txCol.add({ ...data, createdAt: firebase.firestore.FieldValue.serverTimestamp() })
+    .catch(err => {
+      console.error('Add failed:', err);
+      showToast('Saqlashda xatolik. Internetni tekshiring.');
+      transactions = transactions.filter(t => t.id !== tempId);
+      renderTab(currentTab);
+    });
+}
+
+function deleteTx(id) {
+  // optimistic remove
+  transactions = transactions.filter(t => t.id !== id);
+  renderTab(currentTab);
+  txCol.doc(id).delete().catch(err => {
+    console.error('Delete failed:', err);
+    showToast('O\'chirishda xatolik.');
+  });
+}
+
+// ── toast ─────────────────────────────────────────────────────────────
+let toastTimer;
+function showToast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 3000);
+}
+
+// ── UI helpers ────────────────────────────────────────────────────────
+function showLoader() {
+  document.getElementById('tab-'+currentTab).innerHTML = `
+    <div class="loader-wrap"><div class="spinner"></div><div class="loader-text">Ma'lumotlar yuklanmoqda…</div></div>`;
+}
+function setStatus(live) {
+  document.getElementById('statusDot').className = 'status-dot'+(live?' live':'');
+  document.getElementById('statusText').textContent = live ? 'Jonli sinxronlash' : 'Oflayn';
+}
+function showError(msg) {
+  document.getElementById('tab-'+currentTab).innerHTML = `
+    <div class="empty"><div class="empty-icon">⚠️</div><strong>Ulanib bo'lmadi.</strong><br><span style="font-size:12px">${esc(msg)}</span></div>`;
+}
+
+// ── filters ───────────────────────────────────────────────────────────
+function filterTx(range) {
+  const now = new Date(); now.setHours(23,59,59,999);
+  const from = new Date(now);
+  if      (range==='daily')   { from.setHours(0,0,0,0); }
+  else if (range==='weekly')  { from.setDate(from.getDate()-6); from.setHours(0,0,0,0); }
+  else if (range==='monthly') { from.setDate(1); from.setHours(0,0,0,0); }
+  else                        { from.setFullYear(from.getFullYear()-10); }
+  return transactions.filter(t => { const d=new Date(t.date+'T00:00:00'); return d>=from && d<=now; });
+}
+function sum(txs, type) {
+  return txs.filter(t=>type?t.type===type:true).reduce((a,t)=>a+t.amount,0);
+}
+
+// ── category meta ─────────────────────────────────────────────────────
+const CAT_ICONS = {food:'🍔',transport:'🚗',bills:'💡',health:'💊',entertainment:'🎬',shopping:'🛍',charity:'🤲',savings:'🏦',income:'💵',other:'📦'};
+const TYPE_COLORS = {expense:'--danger',charity:'--charity',savings:'--savings',income:'--accent'};
+const TYPE_LABELS = {expense:'Xarajat',charity:'Xayriya',savings:'Jamg\'arma',income:'Daromad'};
+function catIcon(cat) { return CAT_ICONS[cat]||'📦'; }
+function typeBg(type) {
+  return {expense:'background:var(--danger-lt);color:var(--danger)',charity:'background:var(--charity-lt);color:var(--charity)',savings:'background:var(--savings-lt);color:var(--savings)',income:'background:var(--accent-lt);color:var(--accent)'}[type]||'';
+}
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+// ── goal editor (inline) ──────────────────────────────────────────────
+function goalEditHTML(key, label, color) {
+  return `
+    <div class="goal-edit-row" id="goalEdit_${key}" hidden>
+      <input type="number" id="goalInput_${key}" min="0" step="1000" placeholder="Yangi maqsad" style="color:var(${color})" />
+      <button class="btn btn-primary" style="padding:7px 12px" onclick="applyGoal('${key}')">✓</button>
+      <button class="btn btn-ghost" style="padding:7px 12px" onclick="cancelGoal('${key}')">✕</button>
+    </div>`;
+}
+function openGoalEdit(key) {
+  document.getElementById('goalEdit_'+key).hidden = false;
+  const inp = document.getElementById('goalInput_'+key);
+  inp.value = goals[key];
+  inp.focus();
+}
+function cancelGoal(key) { document.getElementById('goalEdit_'+key).hidden = true; }
+function applyGoal(key) {
+  const val = parseInt(document.getElementById('goalInput_'+key).value);
+  if (val > 0) { goals[key] = val; saveGoals(); }
+  cancelGoal(key);
+  renderTab(currentTab);
+}
+
+// ── renderers ─────────────────────────────────────────────────────────
+function renderDaily() {
+  const txs = filterTx('daily');
+  const expenses=sum(txs,'expense'), income=sum(txs,'income'), charity=sum(txs,'charity'), savings=sum(txs,'savings');
+  const goalPct = goals.expense>0 ? Math.min(100,Math.round(expenses/goals.expense*100)) : 0;
+  return `
+    <div class="tiles">
+      <div class="tile ${expenses>goals.expense?'danger':''}">
+        <div class="tile-label">Bugungi xarajat</div>
+        <div class="tile-value">${fmt(expenses)}</div>
+        <div class="tile-sub">${txs.filter(t=>t.type==='expense').length} ta tranzaksiya</div>
+      </div>
+      <div class="tile accent"><div class="tile-label">Daromad</div><div class="tile-value">${fmt(income)}</div></div>
+      <div class="tile charity"><div class="tile-label">Xayriya</div><div class="tile-value">${fmt(charity)}</div></div>
+      <div class="tile savings"><div class="tile-label">Jamg'arma</div><div class="tile-value">${fmt(savings)}</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Oylik xarajat limiti</span>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span style="font-size:13px;color:var(--muted)">${fmt(goals.expense)}</span>
+          <button class="btn-edit" onclick="openGoalEdit('expense')">✏️ O'zgartirish</button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="progress-row">
+          <div class="progress-header"><span>Bugun sarflandi</span><span>${fmt(expenses)} / ${fmt(goals.expense)} (${goalPct}%)</span></div>
+          <div class="progress-track"><div class="progress-fill ${goalPct>=100?'':''}\" style="width:${goalPct}%;background:${goalPct>=80?'var(--danger)':'var(--accent)'}"></div></div>
+        </div>
+        ${goalEditHTML('expense','Xarajat limiti','--danger')}
+      </div>
+    </div>
+    ${renderTxCard(txs,"Bugungi tranzaksiyalar")}`;
+}
+
+function renderWeekly() {
+  const txs = filterTx('weekly');
+  const expenses=sum(txs,'expense'), income=sum(txs,'income'), charity=sum(txs,'charity'), savings=sum(txs,'savings');
+  const today=new Date(); today.setHours(0,0,0,0);
+  const days=[];
+  for(let i=6;i>=0;i--){
+    const d=new Date(today); d.setDate(d.getDate()-i);
+    const ds=d.toISOString().slice(0,10);
+    const dayTxs=transactions.filter(t=>t.date===ds);
+    days.push({label:d.toLocaleDateString('uz',{weekday:'short'}).slice(0,2)||d.toLocaleDateString('en',{weekday:'short'}).slice(0,2), val:sum(dayTxs,'expense')+sum(dayTxs,'charity')+sum(dayTxs,'savings')});
+  }
+  const maxVal=Math.max(...days.map(d=>d.val),1);
+  const bars=days.map(d=>`
+    <div class="bar-col">
+      <div class="bar-val">${d.val>0?fmtShort(d.val):'—'}</div>
+      <div class="bar-track"><div class="bar-fill" style="height:${Math.round(d.val/maxVal*100)}%"></div></div>
+      <div class="bar-label">${d.label}</div>
+    </div>`).join('');
+  return `
+    <div class="tiles">
+      <div class="tile"><div class="tile-label">Haftalik xarajat</div><div class="tile-value">${fmt(expenses)}</div></div>
+      <div class="tile accent"><div class="tile-label">Daromad</div><div class="tile-value">${fmt(income)}</div></div>
+      <div class="tile charity"><div class="tile-label">Xayriya</div><div class="tile-value">${fmt(charity)}</div></div>
+      <div class="tile savings"><div class="tile-label">Jamg'arma</div><div class="tile-value">${fmt(savings)}</div></div>
+    </div>
+    <div class="card"><div class="card-header"><span class="card-title">Kunlik taqsimot</span></div><div class="card-body"><div class="bar-chart">${bars}</div></div></div>
+    ${renderTxCard(txs,"Bu haftagi tranzaksiyalar")}`;
+}
+
+function renderMonthly() {
+  const txs=filterTx('monthly');
+  const expenses=sum(txs,'expense'), income=sum(txs,'income'), charity=sum(txs,'charity'), savings=sum(txs,'savings');
+  const net=income-expenses-charity-savings;
+  const cats={};
+  txs.filter(t=>t.type==='expense').forEach(t=>{cats[t.cat]=(cats[t.cat]||0)+t.amount;});
+  const catRows=Object.entries(cats).sort((a,b)=>b[1]-a[1]).map(([cat,amt])=>{
+    const pct=expenses>0?Math.min(100,Math.round(amt/expenses*100)):0;
+    return `<div class="progress-row"><div class="progress-header"><span>${catIcon(cat)} ${cat==='food'?'Oziq-ovqat':cat==='transport'?'Transport':cat==='bills'?'Kommunal':cat==='health'?'Salomatlik':cat==='entertainment'?'Ko\'ngil ochar':cat==='shopping'?'Xarid':cat.charAt(0).toUpperCase()+cat.slice(1)}</span><span>${fmt(amt)} <span style="color:var(--muted)">(${pct}%)</span></span></div><div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div></div>`;
+  }).join('')||'<div class="empty"><div class="empty-icon">📊</div>Hali xarajat yo\'q.</div>';
+  const dangerPct=income>0?Math.min(100,Math.round(expenses/income*100)):0;
+  const expGoalPct=goals.expense>0?Math.min(100,Math.round(expenses/goals.expense*100)):0;
+  return `
+    <div class="tiles">
+      <div class="tile ${expenses/Math.max(income,1)>.8?'danger':''}"><div class="tile-label">Oylik xarajat</div><div class="tile-value">${fmt(expenses)}</div><div class="tile-sub">Daromadning ${dangerPct}%i</div></div>
+      <div class="tile accent"><div class="tile-label">Daromad</div><div class="tile-value">${fmt(income)}</div></div>
+      <div class="tile charity"><div class="tile-label">Xayriya</div><div class="tile-value">${fmt(charity)}</div><div class="tile-sub">Daromadning ${income>0?Math.round(charity/income*100):0}%i</div></div>
+      <div class="tile ${net<0?'danger':'savings'}"><div class="tile-label">Sof balans</div><div class="tile-value">${fmt(Math.abs(net))}</div><div class="tile-sub">${net<0?'Kamomad':'Ortiqcha'}</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Oylik xarajat limiti</span>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span style="font-size:13px;color:var(--muted)">${fmt(goals.expense)}</span>
+          <button class="btn-edit" onclick="openGoalEdit('expense')">✏️ O'zgartirish</button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="progress-row">
+          <div class="progress-header"><span>Sarflandi</span><span>${fmt(expenses)} / ${fmt(goals.expense)} (${expGoalPct}%)</span></div>
+          <div class="progress-track"><div class="progress-fill" style="width:${expGoalPct}%;background:${expGoalPct>=80?'var(--danger)':'var(--accent)'}"></div></div>
+        </div>
+        ${goalEditHTML('expense','Xarajat limiti','--danger')}
+      </div>
+    </div>
+    <div class="card"><div class="card-header"><span class="card-title">Kategoriya bo'yicha</span></div><div class="card-body">${catRows}</div></div>
+    ${renderTxCard(txs.slice(0,20),'So\'nggi tranzaksiyalar')}`;
+}
+
+function renderCharity() {
+  const all=filterTx('all').filter(t=>t.type==='charity');
+  const monthly=filterTx('monthly').filter(t=>t.type==='charity');
+  const weekly=filterTx('weekly').filter(t=>t.type==='charity');
+  const totalAll=sum(all,'charity'), totalMonthly=sum(monthly,'charity'), totalWeekly=sum(weekly,'charity');
+  const income=sum(filterTx('monthly'),'income');
+  const pct=income>0?(totalMonthly/income*100).toFixed(1):'0.0';
+  const goalPct=goals.charity>0?Math.min(100,Math.round(totalMonthly/goals.charity*100)):0;
+  return `
+    <div class="tiles">
+      <div class="tile charity"><div class="tile-label">Bu oy</div><div class="tile-value">${fmt(totalMonthly)}</div><div class="tile-sub">Daromadning ${pct}%i</div></div>
+      <div class="tile charity"><div class="tile-label">Bu hafta</div><div class="tile-value">${fmt(totalWeekly)}</div></div>
+      <div class="tile charity"><div class="tile-label">Jami</div><div class="tile-value">${fmt(totalAll)}</div><div class="tile-sub">${all.length} ta ehson</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Oylik maqsad: ${fmt(goals.charity)}</span>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span style="font-size:13px;color:var(--charity)">${goalPct}% bajarildi</span>
+          <button class="btn-edit" onclick="openGoalEdit('charity')">✏️ O'zgartirish</button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="progress-row">
+          <div class="progress-header"><span>Bu oy ehson qilindi</span><span>${fmt(totalMonthly)} / ${fmt(goals.charity)}</span></div>
+          <div class="progress-track" style="height:12px"><div class="progress-fill charity" style="width:${goalPct}%"></div></div>
+        </div>
+        ${goalEditHTML('charity','Oylik xayriya maqsadi','--charity')}
+      </div>
+    </div>
+    ${renderTxCard(all,'Barcha xayriya ehsonlari',true)}`;
+}
+
+function renderSavings() {
+  const all=filterTx('all').filter(t=>t.type==='savings');
+  const monthly=filterTx('monthly').filter(t=>t.type==='savings');
+  const totalAll=sum(all,'savings'), totalMonthly=sum(monthly,'savings');
+  const goalPct=goals.savings>0?Math.min(100,Math.round(totalAll/goals.savings*100)):0;
+  const now=new Date();
+  const monthBars=[];
+  for(let i=5;i>=0;i--){
+    const m=new Date(now.getFullYear(),now.getMonth()-i,1);
+    const y=m.getFullYear(),mo=m.getMonth();
+    const mTxs=transactions.filter(t=>{const td=new Date(t.date+'T00:00:00');return t.type==='savings'&&td.getFullYear()===y&&td.getMonth()===mo;});
+    monthBars.push({label:m.toLocaleDateString('en',{month:'short'}),val:sum(mTxs,'savings')});
+  }
+  const maxBar=Math.max(...monthBars.map(b=>b.val),1);
+  const bars=monthBars.map(b=>`
+    <div class="bar-col">
+      <div class="bar-val">${b.val>0?fmtShort(b.val):'—'}</div>
+      <div class="bar-track"><div class="bar-fill savings" style="height:${Math.round(b.val/maxBar*100)}%"></div></div>
+      <div class="bar-label">${b.label}</div>
+    </div>`).join('');
+  return `
+    <div class="tiles">
+      <div class="tile savings"><div class="tile-label">Jami jamg'arma</div><div class="tile-value">${fmt(totalAll)}</div><div class="tile-sub">${all.length} ta to'lov</div></div>
+      <div class="tile savings"><div class="tile-label">Bu oy</div><div class="tile-value">${fmt(totalMonthly)}</div></div>
+      <div class="tile savings"><div class="tile-label">Maqsad</div><div class="tile-value">${goalPct}%</div><div class="tile-sub">${fmt(goals.savings)}</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Jamg'arma maqsadi: ${fmt(goals.savings)}</span>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span style="font-size:13px;color:var(--savings)">${fmt(totalAll)} to'plandi</span>
+          <button class="btn-edit" onclick="openGoalEdit('savings')">✏️ O'zgartirish</button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="progress-row">
+          <div class="progress-header"><span>Maqsadga yo'l</span><span>${fmt(totalAll)} / ${fmt(goals.savings)}</span></div>
+          <div class="progress-track" style="height:12px"><div class="progress-fill savings" style="width:${goalPct}%"></div></div>
+        </div>
+        ${goalEditHTML('savings','Jamg\'arma maqsadi','--savings')}
+      </div>
+    </div>
+    <div class="card"><div class="card-header"><span class="card-title">Oylik jamg'arma</span></div><div class="card-body"><div class="bar-chart">${bars}</div></div></div>
+    ${renderTxCard(all,'Barcha jamg\'armalar',true)}`;
+}
+
+function renderTxCard(txs, title, showAll=false) {
+  const list=showAll?txs:txs.slice(0,10);
+  if(!list.length) return `<div class="card"><div class="card-header"><span class="card-title">${title}</span></div><div class="empty"><div class="empty-icon">💸</div>Hali tranzaksiya yo'q. <strong>+ Yozuv qo'shish</strong> tugmasini bosing.</div></div>`;
+  const rows=list.map(t=>`
+    <div class="tx-item">
+      <div class="tx-icon" style="background:var(${TYPE_COLORS[t.type]||'--border'}-lt,var(--border))">${catIcon(t.cat)}</div>
+      <div class="tx-info">
+        <div class="tx-desc">${esc(t.desc)}</div>
+        <div class="tx-meta">${t.date} · <span class="badge" style="${typeBg(t.type)}">${TYPE_LABELS[t.type]||t.type}</span></div>
+      </div>
+      <div class="tx-amount ${t.type==='income'?'in':'out'}">${t.type==='income'?'+':'-'}${fmt(t.amount)}</div>
+      <button class="tx-delete" data-id="${t.id}" title="O'chirish">✕</button>
+    </div>`).join('');
+  return `<div class="card"><div class="card-header"><span class="card-title">${title}</span><span style="font-size:13px;color:var(--muted)">${txs.length} ta</span></div><div class="card-body"><div class="tx-list">${rows}</div></div></div>`;
+}
+
+// ── tab management ─────────────────────────────────────────────────────
+const RENDERERS={daily:renderDaily,weekly:renderWeekly,monthly:renderMonthly,charity:renderCharity,savings:renderSavings};
+
+function renderTab(name) {
+  const el=document.getElementById('tab-'+name);
+  el.innerHTML=RENDERERS[name]();
+  el.querySelectorAll('.tx-delete').forEach(btn=>{
+    btn.addEventListener('click',e=>{
+      const id=e.currentTarget.dataset.id;
+      deleteTx(id);
+    });
+  });
+}
+function switchTab(name) {
+  currentTab=name;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===name));
+  document.querySelectorAll('[id^="tab-"]').forEach(el=>{el.hidden=el.id!=='tab-'+name;});
+  if(transactions.length||initialized) renderTab(name);
+}
+document.querySelectorAll('.tab').forEach(btn=>btn.addEventListener('click',()=>switchTab(btn.dataset.tab)));
+
+// ── modal ──────────────────────────────────────────────────────────────
+const modal   = document.getElementById('addModal');
+const fDesc   = document.getElementById('f-desc');
+const fAmount = document.getElementById('f-amount');
+const fType   = document.getElementById('f-type');
+const fCat    = document.getElementById('f-cat');
+const fDate   = document.getElementById('f-date');
+
+function openModal() {
+  fDate.value=new Date().toISOString().slice(0,10);
+  fDesc.value=''; fAmount.value='';
+  fType.value='expense'; fCat.value='food';
+  modal.hidden=false; fDesc.focus();
+}
+function closeModal() { modal.hidden=true; }
+
+document.getElementById('openAddBtn').addEventListener('click',openModal);
+document.getElementById('cancelAddBtn').addEventListener('click',closeModal);
+modal.addEventListener('click',e=>{if(e.target===modal)closeModal();});
+fType.addEventListener('change',()=>{
+  fCat.value={charity:'charity',savings:'savings',income:'income',expense:'food'}[fType.value]||'other';
+});
+
+document.getElementById('confirmAddBtn').addEventListener('click',()=>{
+  const desc=fDesc.value.trim();
+  const amount=parseFloat(fAmount.value);
+  if(!desc){fDesc.focus();return;}
+  if(!amount||amount<=0){fAmount.focus();return;}
+  addTx({desc,amount,type:fType.value,cat:fCat.value,date:fDate.value||new Date().toISOString().slice(0,10)});
+  closeModal();
+  showToast('Saqlandi ✓');
+});
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape')closeModal();
+  if((e.metaKey||e.ctrlKey)&&e.key==='n'){e.preventDefault();openModal();}
+});
+
+// ── theme ──────────────────────────────────────────────────────────────
+const themeBtn=document.getElementById('themeBtn');
+let theme='system';
+try{theme=localStorage.getItem('ledger_theme')||'system';}catch(e){}
+function applyTheme(){
+  if(theme==='dark')document.documentElement.setAttribute('data-theme','dark');
+  else if(theme==='light')document.documentElement.setAttribute('data-theme','light');
+  else document.documentElement.removeAttribute('data-theme');
+  themeBtn.textContent=theme==='dark'?'☀️':theme==='light'?'🌙':'🌓';
+  try{localStorage.setItem('ledger_theme',theme);}catch(e){}
+}
+themeBtn.addEventListener('click',()=>{
+  theme=theme==='system'?'dark':theme==='dark'?'light':'system';
+  applyTheme();
+});
+applyTheme();
+
+// ── start ──────────────────────────────────────────────────────────────
+switchTab('daily');
+startListener();
+</script>
+</body>
+</html>
