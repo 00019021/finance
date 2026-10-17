@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uz">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>Ledger</title>
+<title>Moliya nazorati — Ledger</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&display=swap" />
 <style>
@@ -42,17 +42,61 @@ input,select,textarea{font-family:inherit;font-size:inherit;}
 .header{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;flex-wrap:wrap;gap:12px;}
 .logo{font-family:var(--font-display);font-size:28px;letter-spacing:-0.5px;color:var(--fg);}
 .logo span{color:var(--accent);font-style:italic;}
-.header-actions{display:flex;gap:8px;align-items:center;}
-.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;border:none;font-size:14px;font-weight:500;transition:opacity .15s;}
-.btn:hover{opacity:.85;}
-.btn-primary{background:var(--accent);color:#fff;}
-.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border);}
-.btn-edit{background:none;border:none;color:var(--muted);font-size:13px;padding:3px 8px;border-radius:6px;border:1px solid var(--border);}
-.btn-edit:hover{color:var(--fg);border-color:var(--fg);}
+.header-actions{display:flex;gap:10px;align-items:center;}
 
-.tabs{display:flex;gap:4px;border-bottom:1px solid var(--border);margin-bottom:28px;overflow-x:auto;}
-.tab{padding:8px 18px;border:none;background:none;color:var(--muted);font-size:14px;font-weight:500;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .15s,border-color .15s;white-space:nowrap;}
-.tab.active{color:var(--fg);border-bottom-color:var(--accent);}
+/* Usability enhanced buttons */
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  padding:10px 18px;
+  border-radius:10px;
+  border:none;
+  font-size:14px;
+  font-weight:500;
+  min-height:42px;
+  transition:all .15s ease;
+  user-select:none;
+  -webkit-tap-highlight-color:transparent;
+}
+.btn:hover{opacity:.9;transform:translateY(-1px);}
+.btn:active{transform:scale(0.98);}
+.btn-primary{background:var(--accent);color:#fff;box-shadow:0 2px 6px rgba(45,106,79,0.25);}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border);}
+.btn-ghost:hover{color:var(--fg);border-color:var(--fg);}
+
+.btn-edit{
+  background:none;
+  border:1px solid var(--border);
+  color:var(--muted);
+  font-size:13px;
+  padding:5px 10px;
+  border-radius:6px;
+  min-height:32px;
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  transition:all .15s;
+}
+.btn-edit:hover, .btn-edit:active{color:var(--fg);border-color:var(--fg);background:var(--surface);}
+
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--border);margin-bottom:28px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.tab{
+  padding:10px 18px;
+  border:none;
+  background:none;
+  color:var(--muted);
+  font-size:14px;
+  font-weight:500;
+  border-bottom:2px solid transparent;
+  margin-bottom:-1px;
+  transition:color .15s,border-color .15s;
+  white-space:nowrap;
+  touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;
+}
+.tab.active{color:var(--fg);border-bottom-color:var(--accent);font-weight:600;}
 .tab:hover:not(.active){color:var(--fg);}
 
 .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:28px;}
@@ -71,10 +115,18 @@ input,select,textarea{font-family:inherit;font-size:inherit;}
 .card-body{padding:20px;}
 
 .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;align-items:end;}
-.field{display:flex;flex-direction:column;gap:4px;}
-.field label{font-size:12px;color:var(--muted);font-weight:500;}
-.field input,.field select{padding:9px 12px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--fg);font-size:14px;transition:border-color .15s;}
-.field input:focus,.field select:focus{outline:none;border-color:var(--accent);}
+.field{display:flex;flex-direction:column;gap:5px;}
+.field label{font-size:12px;color:var(--muted);font-weight:600;}
+.field input,.field select{
+  padding:10px 12px;
+  border:1px solid var(--border);
+  border-radius:8px;
+  background:var(--bg);
+  color:var(--fg);
+  font-size:14px;
+  transition:border-color .15s, box-shadow .15s;
+}
+.field input:focus,.field select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-lt);}
 .field select option{background:var(--surface);}
 
 .tx-list{display:flex;flex-direction:column;}
@@ -83,13 +135,35 @@ input,select,textarea{font-family:inherit;font-size:inherit;}
 .tx-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
 .tx-info{flex:1;min-width:0;}
 .tx-desc{font-weight:500;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.tx-meta{font-size:12px;color:var(--muted);}
+.tx-meta{font-size:12px;color:var(--muted);margin-top:2px;}
 .tx-amount{font-variant-numeric:tabular-nums;font-weight:600;font-size:14px;flex-shrink:0;text-align:right;}
 .tx-amount.out{color:var(--danger);}
 .tx-amount.in{color:var(--accent);}
-.tx-delete{background:none;border:none;color:var(--muted);font-size:16px;padding:4px;border-radius:6px;opacity:0;transition:opacity .15s;flex-shrink:0;}
-.tx-item:hover .tx-delete{opacity:1;}
-.tx-delete:hover{color:var(--danger);}
+
+/* Usability enhanced delete button */
+.tx-delete{
+  background:none;
+  border:none;
+  color:var(--muted);
+  font-size:16px;
+  width:36px;
+  height:36px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:8px;
+  transition:all .15s ease;
+  flex-shrink:0;
+  -webkit-tap-highlight-color:transparent;
+}
+@media (hover: hover){
+  .tx-delete{opacity:0;}
+  .tx-item:hover .tx-delete{opacity:1;}
+}
+@media (hover: none){
+  .tx-delete{opacity:0.75;}
+}
+.tx-delete:hover, .tx-delete:active{color:var(--danger);background:var(--danger-lt);opacity:1;}
 
 .bar-chart{display:flex;gap:8px;align-items:flex-end;height:110px;}
 .bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;}
@@ -112,13 +186,13 @@ input,select,textarea{font-family:inherit;font-size:inherit;}
 .badge{display:inline-block;padding:2px 8px;border-radius:100px;font-size:11px;font-weight:500;}
 
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;z-index:100;padding:16px;}
-.modal{background:var(--surface);border-radius:16px;padding:28px;width:100%;max-width:440px;border:1px solid var(--border);}
+.modal{background:var(--surface);border-radius:16px;padding:28px;width:100%;max-width:440px;border:1px solid var(--border);box-shadow:0 12px 36px rgba(0,0,0,0.18);}
 .modal-title{font-family:var(--font-display);font-size:22px;margin-bottom:20px;}
-.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:20px;}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:24px;}
 
 /* goal edit inline */
 .goal-edit-row{display:flex;align-items:center;gap:8px;margin-top:12px;}
-.goal-edit-row input{flex:1;padding:7px 10px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--fg);font-size:14px;}
+.goal-edit-row input{flex:1;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--fg);font-size:14px;}
 .goal-edit-row input:focus{outline:none;border-color:var(--accent);}
 
 .loader-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px;gap:16px;}
@@ -129,15 +203,29 @@ input,select,textarea{font-family:inherit;font-size:inherit;}
 .status-dot{width:8px;height:8px;border-radius:50%;background:var(--muted);flex-shrink:0;transition:background .3s;}
 .status-dot.live{background:#34A853;}
 .status-row{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);}
-.theme-btn{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:7px 10px;font-size:16px;}
+.theme-btn{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:8px;
+  width:42px;
+  height:42px;
+  font-size:17px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  transition:all .15s;
+  -webkit-tap-highlight-color:transparent;
+}
+.theme-btn:active{transform:scale(0.96);}
 
 /* toast */
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--fg);color:var(--bg);padding:10px 20px;border-radius:100px;font-size:13px;font-weight:500;transition:transform .3s ease;z-index:200;white-space:nowrap;}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--fg);color:var(--bg);padding:10px 20px;border-radius:100px;font-size:13px;font-weight:500;transition:transform .3s ease;z-index:200;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,0.2);}
 .toast.show{transform:translateX(-50%) translateY(0);}
 
 @media(max-width:500px){
   .form-grid{grid-template-columns:1fr 1fr;}
   .tile-value{font-size:18px;}
+  .btn{padding:8px 14px;}
 }
 </style>
 </head>
@@ -146,24 +234,24 @@ input,select,textarea{font-family:inherit;font-size:inherit;}
 <div class="app">
   <header class="header">
     <div>
-      <div class="logo">Le<span>dger</span></div>
+      <div class="logo">Moliya <span>nazorati</span></div>
       <div class="status-row">
         <div class="status-dot" id="statusDot"></div>
-        <span id="statusText">Connecting…</span>
+        <span id="statusText">Ulanmoqda…</span>
       </div>
     </div>
     <div class="header-actions">
-      <button class="theme-btn" id="themeBtn" title="Toggle theme">🌓</button>
-      <button class="btn btn-primary" id="openAddBtn">+ Add Entry</button>
+      <button class="theme-btn" id="themeBtn" title="Mavzuni o'zgartirish" aria-label="Mavzuni o'zgartirish">🌓</button>
+      <button class="btn btn-primary" id="openAddBtn">+ Yangi yozuv</button>
     </div>
   </header>
 
   <nav class="tabs" role="tablist">
-    <button class="tab active" data-tab="daily">Daily</button>
-    <button class="tab" data-tab="weekly">Weekly</button>
-    <button class="tab" data-tab="monthly">Monthly</button>
-    <button class="tab" data-tab="charity">Charity</button>
-    <button class="tab" data-tab="savings">Savings</button>
+    <button class="tab active" data-tab="daily">Kunlik</button>
+    <button class="tab" data-tab="weekly">Haftalik</button>
+    <button class="tab" data-tab="monthly">Oylik</button>
+    <button class="tab" data-tab="charity">Xayriya</button>
+    <button class="tab" data-tab="savings">Jamg'arma</button>
   </nav>
 
   <div id="tab-daily"></div>
@@ -173,14 +261,14 @@ input,select,textarea{font-family:inherit;font-size:inherit;}
   <div id="tab-savings" hidden></div>
 </div>
 
-<!-- Add Entry Modal -->
+<!-- Yangi yozuv qo'shish modali -->
 <div class="overlay" id="addModal" hidden>
   <div class="modal" role="dialog" aria-modal="true">
-    <div class="modal-title">New Entry</div>
+    <div class="modal-title">Yangi yozuv qo'shish</div>
     <div class="form-grid">
       <div class="field" style="grid-column:1/-1">
-        <label for="f-desc">Description</label>
-        <input id="f-desc" type="text" placeholder="e.g. Oziq-ovqat xaridlari" maxlength="60" />
+        <label for="f-desc">Tavsif (nomi)</label>
+        <input id="f-desc" type="text" placeholder="Masalan: Oziq-ovqat xaridi" maxlength="60" />
       </div>
       <div class="field">
         <label for="f-amount">Miqdor (so'm)</label>
@@ -216,13 +304,13 @@ input,select,textarea{font-family:inherit;font-size:inherit;}
       </div>
     </div>
     <div class="modal-actions">
-      <button class="btn btn-ghost" id="cancelAddBtn">Bekor qilish</button>
-      <button class="btn btn-primary" id="confirmAddBtn">Saqlash</button>
+      <button class="btn btn-ghost" id="cancelAddBtn" type="button">Bekor qilish</button>
+      <button class="btn btn-primary" id="confirmAddBtn" type="button">Saqlash</button>
     </div>
   </div>
 </div>
 
-<!-- Toast -->
+<!-- Toast bildirishnoma -->
 <div class="toast" id="toast"></div>
 
 <!-- Firebase SDKs -->
@@ -266,7 +354,6 @@ loadGoals();
 
 // ── currency format ───────────────────────────────────────────────────
 function fmt(n) {
-  // UZS: space-separated thousands, e.g. "1 250 000 so'm"
   const s = Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
   return s + " so'm";
 }
@@ -326,14 +413,13 @@ function startListener() {
   });
 }
 
-// ── optimistic add (no await = no freeze) ─────────────────────────────
+// ── optimistic add ────────────────────────────────────────────────────
 function addTx(data) {
   const tempId = 'tmp_' + Math.random().toString(36).slice(2);
   const record = { id: tempId, ...data };
   transactions.unshift(record);
   transactions.sort((a,b) => b.date.localeCompare(a.date));
   renderTab(currentTab);
-  // fire-and-forget to Firestore; onSnapshot confirms with real ID
   txCol.add({ ...data, createdAt: firebase.firestore.FieldValue.serverTimestamp() })
     .catch(err => {
       console.error('Add failed:', err);
@@ -344,12 +430,12 @@ function addTx(data) {
 }
 
 function deleteTx(id) {
-  // optimistic remove
   transactions = transactions.filter(t => t.id !== id);
   renderTab(currentTab);
+  showToast("O'chirildi ✓");
   txCol.doc(id).delete().catch(err => {
     console.error('Delete failed:', err);
-    showToast('O\'chirishda xatolik.');
+    showToast("O'chirishda xatolik.");
   });
 }
 
@@ -406,8 +492,8 @@ function goalEditHTML(key, label, color) {
   return `
     <div class="goal-edit-row" id="goalEdit_${key}" hidden>
       <input type="number" id="goalInput_${key}" min="0" step="1000" placeholder="Yangi maqsad" style="color:var(${color})" />
-      <button class="btn btn-primary" style="padding:7px 12px" onclick="applyGoal('${key}')">✓</button>
-      <button class="btn btn-ghost" style="padding:7px 12px" onclick="cancelGoal('${key}')">✕</button>
+      <button class="btn btn-primary" style="padding:6px 14px;min-height:36px;" onclick="applyGoal('${key}')" title="Saqlash">✓</button>
+      <button class="btn btn-ghost" style="padding:6px 14px;min-height:36px;" onclick="cancelGoal('${key}')" title="Bekor qilish">✕</button>
     </div>`;
 }
 function openGoalEdit(key) {
@@ -419,7 +505,11 @@ function openGoalEdit(key) {
 function cancelGoal(key) { document.getElementById('goalEdit_'+key).hidden = true; }
 function applyGoal(key) {
   const val = parseInt(document.getElementById('goalInput_'+key).value);
-  if (val > 0) { goals[key] = val; saveGoals(); }
+  if (val > 0) { 
+    goals[key] = val; 
+    saveGoals(); 
+    showToast("Maqsad yangilandi ✓");
+  }
   cancelGoal(key);
   renderTab(currentTab);
 }
@@ -451,7 +541,7 @@ function renderDaily() {
       <div class="card-body">
         <div class="progress-row">
           <div class="progress-header"><span>Bugun sarflandi</span><span>${fmt(expenses)} / ${fmt(goals.expense)} (${goalPct}%)</span></div>
-          <div class="progress-track"><div class="progress-fill ${goalPct>=100?'':''}\" style="width:${goalPct}%;background:${goalPct>=80?'var(--danger)':'var(--accent)'}"></div></div>
+          <div class="progress-track"><div class="progress-fill" style="width:${goalPct}%;background:${goalPct>=80?'var(--danger)':'var(--accent)'}"></div></div>
         </div>
         ${goalEditHTML('expense','Xarajat limiti','--danger')}
       </div>
@@ -463,12 +553,16 @@ function renderWeekly() {
   const txs = filterTx('weekly');
   const expenses=sum(txs,'expense'), income=sum(txs,'income'), charity=sum(txs,'charity'), savings=sum(txs,'savings');
   const today=new Date(); today.setHours(0,0,0,0);
+  const uzDays = ['Yak', 'Dush', 'Sesh', 'Chor', 'Pay', 'Juma', 'Shan'];
   const days=[];
   for(let i=6;i>=0;i--){
     const d=new Date(today); d.setDate(d.getDate()-i);
     const ds=d.toISOString().slice(0,10);
     const dayTxs=transactions.filter(t=>t.date===ds);
-    days.push({label:d.toLocaleDateString('uz',{weekday:'short'}).slice(0,2)||d.toLocaleDateString('en',{weekday:'short'}).slice(0,2), val:sum(dayTxs,'expense')+sum(dayTxs,'charity')+sum(dayTxs,'savings')});
+    days.push({
+      label: uzDays[d.getDay()], 
+      val: sum(dayTxs,'expense')+sum(dayTxs,'charity')+sum(dayTxs,'savings')
+    });
   }
   const maxVal=Math.max(...days.map(d=>d.val),1);
   const bars=days.map(d=>`
@@ -496,7 +590,8 @@ function renderMonthly() {
   txs.filter(t=>t.type==='expense').forEach(t=>{cats[t.cat]=(cats[t.cat]||0)+t.amount;});
   const catRows=Object.entries(cats).sort((a,b)=>b[1]-a[1]).map(([cat,amt])=>{
     const pct=expenses>0?Math.min(100,Math.round(amt/expenses*100)):0;
-    return `<div class="progress-row"><div class="progress-header"><span>${catIcon(cat)} ${cat==='food'?'Oziq-ovqat':cat==='transport'?'Transport':cat==='bills'?'Kommunal':cat==='health'?'Salomatlik':cat==='entertainment'?'Ko\'ngil ochar':cat==='shopping'?'Xarid':cat.charAt(0).toUpperCase()+cat.slice(1)}</span><span>${fmt(amt)} <span style="color:var(--muted)">(${pct}%)</span></span></div><div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div></div>`;
+    const catName = cat==='food'?'Oziq-ovqat':cat==='transport'?'Transport':cat==='bills'?'Kommunal':cat==='health'?'Salomatlik':cat==='entertainment'?'Ko\'ngil ochar':cat==='shopping'?'Xarid':cat.charAt(0).toUpperCase()+cat.slice(1);
+    return `<div class="progress-row"><div class="progress-header"><span>${catIcon(cat)} ${catName}</span><span>${fmt(amt)} <span style="color:var(--muted)">(${pct}%)</span></span></div><div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div></div>`;
   }).join('')||'<div class="empty"><div class="empty-icon">📊</div>Hali xarajat yo\'q.</div>';
   const dangerPct=income>0?Math.min(100,Math.round(expenses/income*100)):0;
   const expGoalPct=goals.expense>0?Math.min(100,Math.round(expenses/goals.expense*100)):0;
@@ -566,12 +661,13 @@ function renderSavings() {
   const totalAll=sum(all,'savings'), totalMonthly=sum(monthly,'savings');
   const goalPct=goals.savings>0?Math.min(100,Math.round(totalAll/goals.savings*100)):0;
   const now=new Date();
+  const uzMonths = ['Yan', 'Fev', 'Mar', 'Apr', 'May', 'Iyun', 'Iyul', 'Avg', 'Sen', 'Okt', 'Noy', 'Dek'];
   const monthBars=[];
   for(let i=5;i>=0;i--){
     const m=new Date(now.getFullYear(),now.getMonth()-i,1);
     const y=m.getFullYear(),mo=m.getMonth();
     const mTxs=transactions.filter(t=>{const td=new Date(t.date+'T00:00:00');return t.type==='savings'&&td.getFullYear()===y&&td.getMonth()===mo;});
-    monthBars.push({label:m.toLocaleDateString('en',{month:'short'}),val:sum(mTxs,'savings')});
+    monthBars.push({label:uzMonths[mo],val:sum(mTxs,'savings')});
   }
   const maxBar=Math.max(...monthBars.map(b=>b.val),1);
   const bars=monthBars.map(b=>`
@@ -608,7 +704,7 @@ function renderSavings() {
 
 function renderTxCard(txs, title, showAll=false) {
   const list=showAll?txs:txs.slice(0,10);
-  if(!list.length) return `<div class="card"><div class="card-header"><span class="card-title">${title}</span></div><div class="empty"><div class="empty-icon">💸</div>Hali tranzaksiya yo'q. <strong>+ Yozuv qo'shish</strong> tugmasini bosing.</div></div>`;
+  if(!list.length) return `<div class="card"><div class="card-header"><span class="card-title">${title}</span></div><div class="empty"><div class="empty-icon">💸</div>Hali tranzaksiya yo'q. <strong>+ Yangi yozuv</strong> tugmasini bosing.</div></div>`;
   const rows=list.map(t=>`
     <div class="tx-item">
       <div class="tx-icon" style="background:var(${TYPE_COLORS[t.type]||'--border'}-lt,var(--border))">${catIcon(t.cat)}</div>
@@ -617,7 +713,7 @@ function renderTxCard(txs, title, showAll=false) {
         <div class="tx-meta">${t.date} · <span class="badge" style="${typeBg(t.type)}">${TYPE_LABELS[t.type]||t.type}</span></div>
       </div>
       <div class="tx-amount ${t.type==='income'?'in':'out'}">${t.type==='income'?'+':'-'}${fmt(t.amount)}</div>
-      <button class="tx-delete" data-id="${t.id}" title="O'chirish">✕</button>
+      <button class="tx-delete" data-id="${t.id}" title="O'chirish" aria-label="O'chirish">✕</button>
     </div>`).join('');
   return `<div class="card"><div class="card-header"><span class="card-title">${title}</span><span style="font-size:13px;color:var(--muted)">${txs.length} ta</span></div><div class="card-body"><div class="tx-list">${rows}</div></div></div>`;
 }
@@ -662,8 +758,45 @@ function closeModal() { modal.hidden=true; }
 document.getElementById('openAddBtn').addEventListener('click',openModal);
 document.getElementById('cancelAddBtn').addEventListener('click',closeModal);
 modal.addEventListener('click',e=>{if(e.target===modal)closeModal();});
-fType.addEventListener('change',()=>{
-  fCat.value={charity:'charity',savings:'savings',income:'income',expense:'food'}[fType.value]||'other';
+
+// Category and Type synchronization:
+// If matching (charity, savings, income), both become the same.
+// Otherwise (food, transport, bills, etc.), they remain distinct with Type = expense.
+const MATCHED_MODES = ['charity', 'savings', 'income'];
+const EXPENSE_CATEGORIES = ['food', 'transport', 'bills', 'health', 'entertainment', 'shopping', 'other'];
+
+fType.addEventListener('change', () => {
+  const chosenType = fType.value;
+  if (MATCHED_MODES.includes(chosenType)) {
+    // Same category and type
+    fCat.value = chosenType;
+  } else if (chosenType === 'expense') {
+    // If switching to expense, ensure category is an expense category (different)
+    if (!EXPENSE_CATEGORIES.includes(fCat.value)) {
+      fCat.value = 'food';
+    }
+  }
+});
+
+fCat.addEventListener('change', () => {
+  const chosenCat = fCat.value;
+  if (MATCHED_MODES.includes(chosenCat)) {
+    // Same category and type
+    fType.value = chosenCat;
+  } else if (EXPENSE_CATEGORIES.includes(chosenCat)) {
+    // Different: expense categories map to type 'expense'
+    fType.value = 'expense';
+  }
+});
+
+// Submit on Enter key inside inputs
+[fDesc, fAmount, fDate].forEach(inp => {
+  inp.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      document.getElementById('confirmAddBtn').click();
+    }
+  });
 });
 
 document.getElementById('confirmAddBtn').addEventListener('click',()=>{
