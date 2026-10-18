@@ -218,9 +218,152 @@ input,select,textarea{font-family:inherit;font-size:inherit;}
 }
 .theme-btn:active{transform:scale(0.96);}
 
+#authScreen{
+  min-height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px max(16px,env(safe-area-inset-left,0px));
+}
+.auth-card{
+  width:100%;
+  max-width:420px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:32px 28px;
+}
+.auth-logo{font-family:var(--font-display);font-size:30px;margin-bottom:6px;}
+.auth-logo span{color:var(--accent);font-style:italic;}
+.auth-lead{color:var(--muted);font-size:14px;margin-bottom:22px;}
+.auth-mode{
+  display:flex;gap:4px;margin-bottom:20px;border:1px solid var(--border);border-radius:10px;padding:4px;
+}
+.auth-mode button{
+  flex:1;border:none;background:transparent;color:var(--muted);padding:9px 10px;border-radius:8px;font-weight:500;min-height:40px;
+}
+.auth-mode button.active{background:var(--accent);color:#fff;}
+.auth-form{display:flex;flex-direction:column;gap:12px;}
+.auth-error{min-height:20px;font-size:13px;color:var(--danger);margin-top:4px;}
+.auth-submit{width:100%;margin-top:6px;}
+.user-chip{
+  display:flex;align-items:center;gap:8px;max-width:220px;
+}
+.user-chip span{
+  font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+
 /* toast */
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--fg);color:var(--bg);padding:10px 20px;border-radius:100px;font-size:13px;font-weight:500;transition:transform .3s ease;z-index:200;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,0.2);}
 .toast.show{transform:translateX(-50%) translateY(0);}
+
+/* password reset link */
+.auth-extras{display:flex;justify-content:space-between;align-items:center;margin-top:2px;gap:8px;flex-wrap:wrap;}
+.auth-link{background:none;border:none;color:var(--accent);font-size:13px;padding:0;text-decoration:underline;cursor:pointer;}
+.auth-link:hover{opacity:.8;}
+
+/* google sign-in */
+.btn-google{
+  width:100%;background:#fff;color:#444;border:1px solid var(--border);font-weight:500;gap:8px;
+  box-shadow:0 1px 3px rgba(0,0,0,0.08);
+}
+.btn-google:hover{background:#f8f8f8;border-color:#bbb;}
+.btn-google svg{width:18px;height:18px;flex-shrink:0;}
+.auth-divider{display:flex;align-items:center;gap:12px;margin:16px 0;color:var(--muted);font-size:13px;}
+.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--border);}
+
+/* field validation */
+.field input.invalid,.field select.invalid{border-color:var(--danger);box-shadow:0 0 0 2px var(--danger-lt);}
+.field .field-hint{font-size:11px;min-height:16px;color:var(--danger);margin-top:2px;}
+
+/* budget alert banner */
+.alert-banner{
+  display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:12px;margin-bottom:14px;
+  font-size:13px;font-weight:500;animation:slideIn .3s ease;
+}
+.alert-banner .alert-icon{font-size:18px;flex-shrink:0;}
+.alert-banner .alert-close{
+  margin-left:auto;background:none;border:none;color:inherit;opacity:.6;font-size:16px;
+  cursor:pointer;padding:4px;flex-shrink:0;
+}
+.alert-banner .alert-close:hover{opacity:1;}
+.alert-banner.warn{background:var(--warn-lt);color:var(--warn);border:1px solid var(--warn);}
+.alert-banner.danger{background:var(--danger-lt);color:var(--danger);border:1px solid var(--danger);}
+.alert-banner.info{background:var(--accent-lt);color:var(--accent);border:1px solid var(--accent);}
+.alert-banner.charity{background:var(--charity-lt);color:var(--charity);border:1px solid var(--charity);}
+.alert-banner .alert-action{
+  margin-left:auto;background:var(--charity);color:#fff;border:none;padding:5px 12px;
+  border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;transition:opacity .15s;
+}
+.alert-banner .alert-action:hover{opacity:.9;}
+@keyframes slideIn{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
+
+/* ayat celebration modal */
+.ayat-card{text-align:center;}
+.ayat-icon{font-size:42px;margin-bottom:12px;}
+.ayat-arabic{
+  font-family:'DM Serif Display',Georgia,serif;font-size:20px;line-height:1.7;color:var(--fg);
+  margin-bottom:12px;direction:rtl;padding:12px 14px;background:var(--bg);border-radius:10px;
+}
+.ayat-uzbek{font-size:14px;color:var(--fg);line-height:1.6;margin-bottom:10px;font-style:italic;}
+.ayat-ref{font-size:12px;color:var(--charity);font-weight:600;letter-spacing:.03em;}
+.ayat-badge{
+  display:inline-block;padding:3px 12px;border-radius:100px;font-size:12px;font-weight:600;
+  background:var(--charity-lt);color:var(--charity);margin-bottom:14px;
+}
+
+/* recurring transactions */
+.recurring-card{border-left:3px solid var(--accent);}
+.recurring-badge{
+  display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:100px;
+  font-size:11px;font-weight:600;background:var(--accent-lt);color:var(--accent);
+}
+.recurring-list{display:flex;flex-direction:column;gap:8px;}
+.recurring-item{
+  display:flex;align-items:center;gap:12px;padding:12px 14px;
+  background:var(--bg);border:1px solid var(--border);border-radius:10px;
+}
+.recurring-item .ri-info{flex:1;min-width:0;}
+.recurring-item .ri-name{font-weight:500;font-size:14px;}
+.recurring-item .ri-meta{font-size:12px;color:var(--muted);margin-top:2px;}
+.recurring-item .ri-amount{font-variant-numeric:tabular-nums;font-weight:600;font-size:14px;flex-shrink:0;}
+.recurring-item .ri-actions{display:flex;gap:4px;}
+.recurring-item .ri-del{
+  background:none;border:none;color:var(--muted);font-size:14px;width:32px;height:32px;
+  display:inline-flex;align-items:center;justify-content:center;border-radius:6px;cursor:pointer;
+}
+.recurring-item .ri-del:hover{color:var(--danger);background:var(--danger-lt);}
+.recurring-toggle{
+  display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);cursor:pointer;
+}
+.recurring-toggle input[type="checkbox"]{accent-color:var(--accent);width:16px;height:16px;}
+
+/* month navigation bar */
+.month-nav-bar{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px;
+  background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:10px 16px;
+  flex-wrap:wrap;
+}
+.month-nav-title{
+  font-family:var(--font-display);font-size:19px;color:var(--fg);display:flex;align-items:center;gap:8px;
+}
+.month-nav-title .current-badge{
+  font-family:var(--font-body);font-size:11px;font-weight:600;padding:2px 8px;border-radius:100px;
+  background:var(--accent-lt);color:var(--accent);letter-spacing:0;
+}
+.month-nav-controls{display:flex;align-items:center;gap:6px;}
+.month-nav-btn{
+  background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:6px 14px;
+  font-size:13px;font-weight:600;color:var(--fg);display:inline-flex;align-items:center;gap:4px;
+  min-height:34px;transition:all .15s ease;
+}
+.month-nav-btn:hover:not(:disabled){border-color:var(--accent);color:var(--accent);}
+.month-nav-btn:disabled{opacity:.4;cursor:not-allowed;}
+.month-nav-today-btn{
+  background:none;border:none;color:var(--accent);font-size:12px;font-weight:600;
+  text-decoration:underline;cursor:pointer;padding:4px 8px;
+}
+.month-nav-today-btn:hover{opacity:.8;}
 
 @media(max-width:500px){
   .form-grid{grid-template-columns:1fr 1fr;}
@@ -231,7 +374,49 @@ input,select,textarea{font-family:inherit;font-size:inherit;}
 </head>
 <body>
 
-<div class="app">
+<div id="authScreen">
+  <div class="auth-card">
+    <div class="auth-logo">Moliya <span>nazorati</span></div>
+    <p class="auth-lead">Shaxsiy hisobingizga kiring — har bir foydalanuvchi o‘z yozuvlarini ko‘radi.</p>
+    <div class="auth-mode" role="tablist">
+      <button type="button" class="active" id="authLoginTab">Kirish</button>
+      <button type="button" id="authRegisterTab">Ro‘yxatdan o‘tish</button>
+    </div>
+    <form class="auth-form" id="authForm" autocomplete="on">
+      <div class="field" id="nameField" hidden>
+        <label for="auth-name">Ism</label>
+        <input id="auth-name" type="text" name="name" maxlength="40" placeholder="Ismingiz" autocomplete="name" />
+      </div>
+      <div class="field">
+        <label for="auth-email">Elektron pochta</label>
+        <input id="auth-email" type="email" name="email" required placeholder="siz@email.com" autocomplete="email" />
+        <div class="field-hint" id="emailHint"></div>
+      </div>
+      <div class="field">
+        <label for="auth-pass">Parol</label>
+        <input id="auth-pass" type="password" name="password" required minlength="6" placeholder="Kamida 6 belgi" autocomplete="current-password" />
+        <div class="field-hint" id="passHint"></div>
+      </div>
+      <div class="field" id="confirmField" hidden>
+        <label for="auth-pass2">Parolni tasdiqlang</label>
+        <input id="auth-pass2" type="password" name="password2" minlength="6" placeholder="Parolni qayta kiriting" autocomplete="new-password" />
+        <div class="field-hint" id="pass2Hint"></div>
+      </div>
+      <div class="auth-error" id="authError" role="alert"></div>
+      <button class="btn btn-primary auth-submit" id="authSubmit" type="submit">Kirish</button>
+      <div class="auth-extras" id="authExtras">
+        <button type="button" class="auth-link" id="forgotPassBtn">Parolni unutdingizmi?</button>
+      </div>
+      <div class="auth-divider">yoki</div>
+      <button type="button" class="btn btn-google" id="googleSignInBtn">
+        <svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        Google bilan kirish
+      </button>
+    </form>
+  </div>
+</div>
+
+<div class="app" id="mainApp" hidden>
   <header class="header">
     <div>
       <div class="logo">Moliya <span>nazorati</span></div>
@@ -241,7 +426,11 @@ input,select,textarea{font-family:inherit;font-size:inherit;}
       </div>
     </div>
     <div class="header-actions">
+      <div class="user-chip" title="">
+        <span id="userLabel"></span>
+      </div>
       <button class="theme-btn" id="themeBtn" title="Mavzuni o'zgartirish" aria-label="Mavzuni o'zgartirish">🌓</button>
+      <button class="btn btn-ghost" id="logoutBtn" type="button">Chiqish</button>
       <button class="btn btn-primary" id="openAddBtn">+ Yangi yozuv</button>
     </div>
   </header>
@@ -310,11 +499,76 @@ input,select,textarea{font-family:inherit;font-size:inherit;}
   </div>
 </div>
 
+<!-- Takroriy tranzaksiya modali -->
+<div class="overlay" id="recurringModal" hidden>
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-title">Takroriy tranzaksiya qo'shish</div>
+    <div class="form-grid">
+      <div class="field" style="grid-column:1/-1">
+        <label for="r-desc">Tavsif</label>
+        <input id="r-desc" type="text" placeholder="Masalan: Oylik maosh" maxlength="60" />
+      </div>
+      <div class="field">
+        <label for="r-amount">Miqdor (so'm)</label>
+        <input id="r-amount" type="number" min="1" step="1" placeholder="0" />
+      </div>
+      <div class="field">
+        <label for="r-type">Turi</label>
+        <select id="r-type">
+          <option value="income">Daromad</option>
+          <option value="expense">Xarajat</option>
+          <option value="charity">Xayriya</option>
+          <option value="savings">Jamg'arma</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="r-cat">Kategoriya</label>
+        <select id="r-cat">
+          <option value="income">💵 Daromad</option>
+          <option value="food">🍔 Oziq-ovqat</option>
+          <option value="transport">🚗 Transport</option>
+          <option value="bills">💡 Kommunal</option>
+          <option value="health">💊 Salomatlik</option>
+          <option value="entertainment">🎬 Ko'ngil ochar</option>
+          <option value="shopping">🛍 Xarid</option>
+          <option value="charity">🤲 Xayriya</option>
+          <option value="savings">🏦 Jamg'arma</option>
+          <option value="other">📦 Boshqa</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="r-day">Har oyning kuni</label>
+        <input id="r-day" type="number" min="1" max="28" value="1" placeholder="1-28" />
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" id="cancelRecurringBtn" type="button">Bekor qilish</button>
+      <button class="btn btn-primary" id="confirmRecurringBtn" type="button">Saqlash</button>
+    </div>
+  </div>
+</div>
+
+<!-- Qur'on oyati (ehson/xayriya qilinganda) -->
+<div class="overlay" id="ayatModal" hidden>
+  <div class="modal ayat-card" role="dialog" aria-modal="true">
+    <div class="ayat-icon">🤲</div>
+    <div class="ayat-badge">Ehsoningiz qabul bo‘lsin!</div>
+    <div class="modal-title" style="margin-bottom:12px;font-size:20px;">Qur'oni Karimdan oyat</div>
+    <div class="ayat-arabic" id="ayatArabic"></div>
+    <p class="ayat-uzbek" id="ayatUzbek"></p>
+    <div class="ayat-ref" id="ayatRef"></div>
+    <div class="modal-actions" style="justify-content:center;margin-top:20px;">
+      <button class="btn btn-primary" id="closeAyatBtn" type="button">Alhamdulillah</button>
+    </div>
+  </div>
+</div>
+
 <!-- Toast bildirishnoma -->
 <div class="toast" id="toast"></div>
 
 <!-- Firebase SDKs -->
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
 <script>
@@ -329,30 +583,300 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
+const auth = firebase.auth();
+auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(() => {});
 // Enable offline persistence so the app works without internet
 db.enablePersistence({ synchronizeTabs: true }).catch(() => {});
-const txCol = db.collection('transactions');
+
+function userDocRef() {
+  return db.collection('users').doc(currentUser.uid);
+}
+function txCol() {
+  return userDocRef().collection('transactions');
+}
 
 // ── state ────────────────────────────────────────────────────────────
+let currentUser = null;
+let txUnsub = null;
 let transactions = [];
 let currentTab   = 'daily';
 let initialized  = false;
+let recurring = [];              // recurring transaction templates
+let dismissedAlerts = new Set(); // dismissed budget alert keys (per session)
+let currentMonthOffset = 0;      // 0 = current month, -1 = last month, -2 = 2 months ago, etc.
 
-// ── goals (localStorage) ──────────────────────────────────────────────
+// ── goals (per-user Firestore + local cache) ─────────────────────────
 const DEFAULT_GOALS = { charity: 2000000, savings: 10000000, expense: 5000000 };
 let goals = { ...DEFAULT_GOALS };
-function loadGoals() {
+function goalsCacheKey() {
+  return currentUser ? 'ledger_goals_v2_' + currentUser.uid : 'ledger_goals_v2';
+}
+function loadGoalsLocal() {
+  goals = { ...DEFAULT_GOALS };
+  if (!currentUser) return;
   try {
-    const raw = localStorage.getItem('ledger_goals_v2');
+    const raw = localStorage.getItem(goalsCacheKey());
     if (raw) goals = { ...DEFAULT_GOALS, ...JSON.parse(raw) };
   } catch(e) {}
 }
-function saveGoals() {
-  try { localStorage.setItem('ledger_goals_v2', JSON.stringify(goals)); } catch(e) {}
+async function loadGoals() {
+  loadGoalsLocal();
+  if (!currentUser) return;
+  try {
+    const snap = await userDocRef().get();
+    if (snap.exists && snap.data().goals) {
+      goals = { ...DEFAULT_GOALS, ...snap.data().goals };
+      try { localStorage.setItem(goalsCacheKey(), JSON.stringify(goals)); } catch(e) {}
+    } else {
+      await saveGoals();
+    }
+  } catch(e) {}
 }
-loadGoals();
+async function saveGoals() {
+  try { localStorage.setItem(goalsCacheKey(), JSON.stringify(goals)); } catch(e) {}
+  if (!currentUser) return;
+  try {
+    await userDocRef().set({
+      email: currentUser.email || '',
+      displayName: currentUser.displayName || '',
+      goals,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    }, { merge: true });
+  } catch(e) {}
+}
 
-// ── currency format ───────────────────────────────────────────────────
+// ── recurring transactions (per-user Firestore) ──────────────────────
+function recurCol() {
+  return userDocRef().collection('recurring');
+}
+async function loadRecurring() {
+  recurring = [];
+  if (!currentUser) return;
+  try {
+    const snap = await recurCol().get();
+    recurring = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  } catch(e) { console.error('Load recurring:', e); }
+}
+async function addRecurring(data) {
+  if (!currentUser) return;
+  try {
+    await recurCol().add({
+      ...data,
+      enabled: true,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    await loadRecurring();
+    renderTab(currentTab);
+    showToast("Takroriy tranzaksiya qo'shildi ✓");
+  } catch(e) {
+    console.error('Add recurring:', e);
+    showToast("Saqlashda xatolik.");
+  }
+}
+async function deleteRecurring(id) {
+  if (!currentUser) return;
+  try {
+    await recurCol().doc(id).delete();
+    recurring = recurring.filter(r => r.id !== id);
+    renderTab(currentTab);
+    showToast("Takroriy tranzaksiya o'chirildi ✓");
+  } catch(e) { console.error('Delete recurring:', e); }
+}
+async function toggleRecurring(id, enabled) {
+  if (!currentUser) return;
+  try {
+    await recurCol().doc(id).update({ enabled });
+    const r = recurring.find(x => x.id === id);
+    if (r) r.enabled = enabled;
+  } catch(e) { console.error('Toggle recurring:', e); }
+}
+
+// Auto-apply recurring transactions for current month
+async function applyRecurring() {
+  if (!currentUser || !recurring.length) return;
+  const now = new Date();
+  const monthKey = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+  for (const r of recurring) {
+    if (!r.enabled) continue;
+    const appliedKey = `recur_applied_${currentUser.uid}_${r.id}_${monthKey}`;
+    if (localStorage.getItem(appliedKey)) continue;
+    // Check if today >= day of month for this recurring item
+    if (now.getDate() >= (r.dayOfMonth || 1)) {
+      const dateStr = `${monthKey}-${String(r.dayOfMonth || 1).padStart(2,'0')}`;
+      await txCol().add({
+        desc: r.desc + ' (takroriy)',
+        amount: r.amount,
+        type: r.type,
+        cat: r.cat,
+        date: dateStr,
+        userId: currentUser.uid,
+        recurringId: r.id,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      localStorage.setItem(appliedKey, '1');
+      showToast(`Takroriy: ${r.desc} qo'shildi`);
+    }
+  }
+}
+
+// ── Qur'on oyatlari (Xayriya va ehson haqida) ─────────────────────────
+const CHARITY_AYATS = [
+  {
+    arabic: "مَّثَلُ الَّذِينَ يُنفِقُونَ أَمْوَالَهُمْ فِي سَبِيلِ اللَّهِ كَمَثَلِ حَبَّةٍ أَنبَتَتْ سَبْعَ سَنَابِلَ فِي كُلِّ سُنبُلَةٍ مِّائَةُ حَبَّةٍ",
+    uzbek: "«Mollarini Allohning yo‘lida sarflaydiganlarning misoli, xuddi har bir boshog‘ida yuztadan doni bo‘lgan yettita boshoqni undirib chiqargan bir dona donga o‘xshaydi. Va Alloh xohlaganiga yanada ko‘paytirib beradi.»",
+    ref: "Baqara surasi, 261-oyat"
+  },
+  {
+    arabic: "وَمَا تُنفِقُوا مِنْ خَيْرٍ فَلِأَنفُسِكُمْ ۚ وَمَا تُنفِقُونَ إِلَّا ابْتِغَاءَ وَجْهِ اللَّهِ ۚ وَمَا تُنفِقُوا مِنْ خَيْرٍ يُوَفَّ إِلَيْكُمْ وَأَنتُمْ لَا تُظْلَمُونَ",
+    uzbek: "«Nafaqalaringiz faqat o‘zlaringiz uchundir. Va sizlar faqat Allohning yuzini (roziligini) ko‘zlab infoq qilasizlar. Yaxshilikdan qilgan har bir nafaqangiz sizga to‘liq qilib beriladi va sizga aslo zulm qilinmas.»",
+    ref: "Baqara surasi, 272-oyat"
+  },
+  {
+    arabic: "لَن تَنَالُوا الْبِرَّ حَتَّىٰ تُنفِقُوا مِمَّا تُحِبُّونَ ۚ وَمَا تُنفِقُوا مِن شَيْءٍ فَإِنَّ اللَّهَ بِهِ عَلِيمٌ",
+    uzbek: "«O‘zingiz suygan narsalardan infoq-ehson qilmaguningizcha, hargiz yaxshilikka (jannatga) yeta olmaysiz. Qanday narsani infoq qilsangiz ham, albatta, Alloh uni biluvchidir.»",
+    ref: "Oli Imron surasi, 92-oyat"
+  },
+  {
+    arabic: "الَّذِينَ يُنفِقُونَ أَمْوَالَهُم بِاللَّيْلِ وَالنَّهَارِ سِرًّا وَعَلَانِيَةً فَلَهُمْ أَجْرُهُمْ عِندَ رَبِّهِمْ وَلَا خَوْفٌ عَلَيْهِمْ وَلَا هُمْ يَحْزَنُونَ",
+    uzbek: "«Mollarini kechayu kunduz, pinhonayu oshkora nafaqa qiladigan kishilarning mukofotlari Parvardigorlari huzuridadir. Ularga hech qanday xavf yo‘q va ular aslo xafa bo‘lmaydilar.»",
+    ref: "Baqara surasi, 274-oyat"
+  },
+  {
+    arabic: "قُلْ إِنَّ رَبِّي يَبْسُطُ الرِّزْقَ لِمَن يَشَاءُ مِنْ عِبَادِهِ وَيَقْدِرُ لَهُ ۚ وَمَا أَنفَقْتُم مِّن شَيْءٍ فَهُوَ يُخْلِفُهُ ۖ وَهُوَ خَيْرُ الرَّازِقِينَ",
+    uzbek: "«Ayting: “Albatta, Parvardigorim O‘z bandalaridan O‘zi xohlagan kishining rizqini keng qilur va (O‘zi xohlagan kishining rizqini) tang qilur. Qanday narsani infoq qilsangiz, U zot uning o‘rnini qoplar. U zot rizq beruvchilarning yaxshisidir”.»",
+    ref: "Saba surasi, 39-oyat"
+  },
+  {
+    arabic: "يَمْحَقُ اللَّهُ الرِّبَا وَيُرْبِي الصَّدَقَاتِ ۗ وَاللَّهُ لَا يُحِبُّ كُلَّ كَفَّارٍ أَثِيمٍ",
+    uzbek: "«Alloh sudxo‘rlikni yo‘q qilur va sadaqalarni ziyoda etur (barakali qilur). Va Alloh har bir kofir, gunohkorni sevmas.»",
+    ref: "Baqara surasi, 276-oyat"
+  },
+  {
+    arabic: "وَأَنفِقُوا فِي سَبِيلِ اللَّهِ وَلَا تُلْقُوا بِأَيْدِيكُمْ إِلَى التَّهْلُكَةِ ۛ وَأَحْسِنُوا ۛ إِنَّ اللَّهَ يُحِبُّ الْمُحْسِنِينَ",
+    uzbek: "«Alloh yo‘lida infoq qilinglar va o‘z qo‘llaringiz bilan o‘zingizni halokatga tashlamanglar. Va yaxshilik qilinglar! Albatta, Alloh yaxshilik qiluvchilarni sevadi.»",
+    ref: "Baqara surasi, 195-oyat"
+  },
+  {
+    arabic: "إِنَّ الْمُصَّدِّقِينَ وَالْمُصَّدِّقَاتِ وَأَقْرَضُوا اللَّهَ قَرْضًا حَسَنًا يُضَاعَفُ لَهُمْ وَلَهُمْ أَجْرٌ كَرِيمٌ",
+    uzbek: "«Albatta, sadaqa beruvchi erkaklar va sadaqa beruvchi ayollar hamda Allohga go‘zal qarz berganlarga (savob) necha barobar ko‘paytirilur va ularga karamli ajr (jannat) bordir.»",
+    ref: "Hadid surasi, 18-oyat"
+  }
+];
+
+function getNextAyat() {
+  let idx = 0;
+  try {
+    const saved = localStorage.getItem('last_charity_ayat_idx');
+    if (saved !== null) idx = (parseInt(saved, 10) + 1) % CHARITY_AYATS.length;
+    localStorage.setItem('last_charity_ayat_idx', idx.toString());
+  } catch (e) {
+    idx = Math.floor(Math.random() * CHARITY_AYATS.length);
+  }
+  return CHARITY_AYATS[idx];
+}
+
+function showCharityAyat() {
+  const ayat = getNextAyat();
+  const modal = document.getElementById('ayatModal');
+  if (!modal) return;
+  document.getElementById('ayatArabic').textContent = ayat.arabic;
+  document.getElementById('ayatUzbek').textContent = ayat.uzbek;
+  document.getElementById('ayatRef').textContent = ayat.ref;
+  modal.hidden = false;
+}
+
+function closeAyatModal() {
+  const modal = document.getElementById('ayatModal');
+  if (modal) modal.hidden = true;
+}
+
+// ── budget alerts & daily reminders ──────────────────────────────────
+function generateAlerts(range) {
+  const alerts = [];
+  const txs = filterTx(range);
+  const expenses = sum(txs, 'expense');
+  const expenseGoal = goals.expense || 0;
+
+  // Daily charity reminder notification
+  const todayStr = new Date().toISOString().slice(0, 10);
+  const todayCharityTxs = transactions.filter(t => t.type === 'charity' && t.date === todayStr);
+  const todayCharityTotal = sum(todayCharityTxs, 'charity');
+
+  if (todayCharityTotal === 0 && !dismissedAlerts.has('daily_charity_reminder')) {
+    alerts.push({
+      key: 'daily_charity_reminder',
+      type: 'charity',
+      icon: '🤲',
+      text: `Bugungi kunlik ehsonni unutmang! Ozgina bo‘lsa ham xayriya qiling — baraka shundadir.`,
+      actionBtn: `<button class="alert-action" onclick="openModal('charity')">+ Ehson qilish</button>`
+    });
+  }
+
+  if (expenseGoal > 0) {
+    const pct = expenses / expenseGoal * 100;
+    if (pct >= 100 && !dismissedAlerts.has('over_' + range)) {
+      alerts.push({
+        key: 'over_' + range,
+        type: 'danger',
+        icon: '🚨',
+        text: `Xarajat limitidan oshib ketdi! ${fmt(expenses)} / ${fmt(expenseGoal)} (${Math.round(pct)}%)`
+      });
+    } else if (pct >= 80 && pct < 100 && !dismissedAlerts.has('warn_' + range)) {
+      alerts.push({
+        key: 'warn_' + range,
+        type: 'warn',
+        icon: '⚠️',
+        text: `Xarajat limitiga yaqinlashmoqda: ${fmt(expenses)} / ${fmt(expenseGoal)} (${Math.round(pct)}%)`
+      });
+    }
+  }
+
+  // Charity goal progress alert
+  if (range === 'monthly' || range === 'daily') {
+    const charityMonthly = sum(filterTx('monthly'), 'charity');
+    const charityGoal = goals.charity || 0;
+    if (charityGoal > 0) {
+      const cPct = charityMonthly / charityGoal * 100;
+      if (cPct >= 100 && !dismissedAlerts.has('charity_done')) {
+        alerts.push({
+          key: 'charity_done',
+          type: 'info',
+          icon: '🎉',
+          text: `Oylik xayriya maqsadiga erishdingiz! ${fmt(charityMonthly)} / ${fmt(charityGoal)}`
+        });
+      }
+    }
+  }
+
+  return alerts;
+}
+function renderAlerts(range) {
+  const alerts = generateAlerts(range);
+  if (!alerts.length) return '';
+  return alerts.map(a => `
+    <div class="alert-banner ${a.type}" data-alert-key="${a.key}">
+      <span class="alert-icon">${a.icon}</span>
+      <span>${a.text}</span>
+      ${a.actionBtn || ''}
+      <button class="alert-close" onclick="dismissAlert('${a.key}')" title="Yopish">✕</button>
+    </div>`).join('');
+}
+function dismissAlert(key) {
+  dismissedAlerts.add(key);
+  document.querySelectorAll(`[data-alert-key="${key}"]`).forEach(el => el.remove());
+}
+// Notify on add if over budget
+function checkBudgetOnAdd(data) {
+  if (data.type !== 'expense') return;
+  const txs = filterTx('daily');
+  const expenses = sum(txs, 'expense') + data.amount;
+  const goal = goals.expense || 0;
+  if (goal > 0 && expenses > goal) {
+    showToast('⚠️ Kunlik xarajat limitidan oshib ketdi!');
+  }
+}
+
+
 function fmt(n) {
   const s = Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
   return s + " so'm";
@@ -363,47 +887,19 @@ function fmtShort(n) {
   return Math.round(n).toString();
 }
 
-// ── seed ──────────────────────────────────────────────────────────────
-async function seedExamples() {
-  const today = new Date();
-  const d = o => { const dt = new Date(today); dt.setDate(dt.getDate()-o); return dt.toISOString().slice(0,10); };
-  const examples = [
-    {desc:'Ish haqi',            amount:3500000, type:'income',   cat:'income',        date:d(0)},
-    {desc:'Oziq-ovqat xaridlari',amount:85000,  type:'expense',  cat:'food',          date:d(0)},
-    {desc:'Qahvaxona',           amount:15000,  type:'expense',  cat:'food',          date:d(0)},
-    {desc:'Taksi',               amount:20000,  type:'expense',  cat:'transport',     date:d(1)},
-    {desc:'Netflix obunasi',     amount:35000,  type:'expense',  cat:'entertainment', date:d(1)},
-    {desc:'Mahalliy yordam fondi',amount:100000, type:'charity', cat:'charity',       date:d(2)},
-    {desc:'Jamg\'arma',          amount:500000, type:'savings',  cat:'savings',       date:d(2)},
-    {desc:'Elektr energiya',     amount:120000, type:'expense',  cat:'bills',         date:d(3)},
-    {desc:'Dorixona',            amount:45000,  type:'expense',  cat:'health',        date:d(4)},
-    {desc:'Masjid sadaqasi',     amount:50000,  type:'charity',  cat:'charity',       date:d(5)},
-    {desc:'Jamg\'arma',          amount:300000, type:'savings',  cat:'savings',       date:d(7)},
-    {desc:'Restoran',            amount:95000,  type:'expense',  cat:'food',          date:d(8)},
-    {desc:'Onlayn xarid',        amount:180000, type:'expense',  cat:'shopping',      date:d(10)},
-    {desc:'Qo\'shimcha ish',     amount:800000, type:'income',   cat:'income',        date:d(12)},
-    {desc:'Qizil Yarim Oy',      amount:200000, type:'charity',  cat:'charity',       date:d(15)},
-    {desc:'Jamg\'arma',          amount:700000, type:'savings',  cat:'savings',       date:d(20)},
-    {desc:'Internet',            amount:80000,  type:'expense',  cat:'bills',         date:d(22)},
-    {desc:'Kiyim-kechak',        amount:250000, type:'expense',  cat:'shopping',      date:d(25)},
-  ];
-  const batch = db.batch();
-  examples.forEach(t => batch.set(txCol.doc(), { ...t, createdAt: firebase.firestore.FieldValue.serverTimestamp() }));
-  await batch.commit();
+function stopListener() {
+  if (txUnsub) { txUnsub(); txUnsub = null; }
 }
 
-// ── Firestore listener ────────────────────────────────────────────────
+// ── Firestore listener (current user only) ────────────────────────────
 function startListener() {
+  stopListener();
+  if (!currentUser) return;
   showLoader();
-  txCol.onSnapshot(snapshot => {
-    if (!initialized && snapshot.empty) {
-      initialized = true;
-      seedExamples();
-      return;
-    }
+  txUnsub = txCol().onSnapshot(snapshot => {
     initialized = true;
     transactions = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    transactions.sort((a,b) => b.date.localeCompare(a.date));
+    transactions.sort((a,b) => (b.date||'').localeCompare(a.date||''));
     setStatus(true);
     renderTab(currentTab);
   }, err => {
@@ -415,13 +911,21 @@ function startListener() {
 
 // ── optimistic add ────────────────────────────────────────────────────
 function addTx(data) {
+  if (!currentUser) return;
   const tempId = 'tmp_' + Math.random().toString(36).slice(2);
   const record = { id: tempId, ...data };
   transactions.unshift(record);
   transactions.sort((a,b) => b.date.localeCompare(a.date));
   renderTab(currentTab);
-  txCol.add({ ...data, createdAt: firebase.firestore.FieldValue.serverTimestamp() })
-    .catch(err => {
+  checkBudgetOnAdd(data);
+  if (data.type === 'charity') {
+    showCharityAyat();
+  }
+  txCol().add({
+    ...data,
+    userId: currentUser.uid,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  }).catch(err => {
       console.error('Add failed:', err);
       showToast('Saqlashda xatolik. Internetni tekshiring.');
       transactions = transactions.filter(t => t.id !== tempId);
@@ -430,10 +934,11 @@ function addTx(data) {
 }
 
 function deleteTx(id) {
+  if (!currentUser) return;
   transactions = transactions.filter(t => t.id !== id);
   renderTab(currentTab);
   showToast("O'chirildi ✓");
-  txCol.doc(id).delete().catch(err => {
+  txCol().doc(id).delete().catch(err => {
     console.error('Delete failed:', err);
     showToast("O'chirishda xatolik.");
   });
@@ -464,14 +969,53 @@ function showError(msg) {
 }
 
 // ── filters ───────────────────────────────────────────────────────────
-function filterTx(range) {
+const UZ_MONTHS = ['Yanvar', 'Fevral', 'Mart', 'Aprel', 'May', 'Iyun', 'Iyul', 'Avgust', 'Sentabr', 'Oktabr', 'Noyabr', 'Dekabr'];
+
+function getSelectedMonthDate(offset = currentMonthOffset) {
+  const d = new Date();
+  return new Date(d.getFullYear(), d.getMonth() + offset, 1);
+}
+
+function changeMonthOffset(delta) {
+  if (delta > 0 && currentMonthOffset >= 0) return; // cannot go into future months
+  currentMonthOffset += delta;
+  renderTab('monthly');
+}
+
+function resetMonthOffset() {
+  currentMonthOffset = 0;
+  renderTab('monthly');
+}
+
+function filterTx(range, monthOffset = null) {
   const now = new Date(); now.setHours(23,59,59,999);
-  const from = new Date(now);
-  if      (range==='daily')   { from.setHours(0,0,0,0); }
-  else if (range==='weekly')  { from.setDate(from.getDate()-6); from.setHours(0,0,0,0); }
-  else if (range==='monthly') { from.setDate(1); from.setHours(0,0,0,0); }
-  else                        { from.setFullYear(from.getFullYear()-10); }
-  return transactions.filter(t => { const d=new Date(t.date+'T00:00:00'); return d>=from && d<=now; });
+  
+  if (range === 'daily') {
+    const from = new Date(now);
+    from.setHours(0,0,0,0);
+    return transactions.filter(t => { const d = new Date(t.date + 'T00:00:00'); return d >= from && d <= now; });
+  } else if (range === 'weekly') {
+    const from = new Date(now);
+    from.setDate(from.getDate() - 6);
+    from.setHours(0,0,0,0);
+    return transactions.filter(t => { const d = new Date(t.date + 'T00:00:00'); return d >= from && d <= now; });
+  } else if (range === 'monthly') {
+    const offset = monthOffset !== null ? monthOffset : currentMonthOffset;
+    const baseDate = new Date();
+    const targetMonth = new Date(baseDate.getFullYear(), baseDate.getMonth() + offset, 1);
+    const y = targetMonth.getFullYear();
+    const m = targetMonth.getMonth();
+    const from = new Date(y, m, 1, 0, 0, 0, 0);
+    const to = new Date(y, m + 1, 0, 23, 59, 59, 999);
+    return transactions.filter(t => {
+      const d = new Date(t.date + 'T00:00:00');
+      return d >= from && d <= to;
+    });
+  } else {
+    const from = new Date(now);
+    from.setFullYear(from.getFullYear() - 10);
+    return transactions.filter(t => { const d = new Date(t.date + 'T00:00:00'); return d >= from && d <= now; });
+  }
 }
 function sum(txs, type) {
   return txs.filter(t=>type?t.type===type:true).reduce((a,t)=>a+t.amount,0);
@@ -488,30 +1032,241 @@ function typeBg(type) {
 function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 // ── goal editor (inline) ──────────────────────────────────────────────
-function goalEditHTML(key, label, color) {
+function goalEditHTML(key, label, color, suffix = '') {
+  const fullId = suffix ? `${key}_${suffix}` : key;
   return `
-    <div class="goal-edit-row" id="goalEdit_${key}" hidden>
-      <input type="number" id="goalInput_${key}" min="0" step="1000" placeholder="Yangi maqsad" style="color:var(${color})" />
-      <button class="btn btn-primary" style="padding:6px 14px;min-height:36px;" onclick="applyGoal('${key}')" title="Saqlash">✓</button>
-      <button class="btn btn-ghost" style="padding:6px 14px;min-height:36px;" onclick="cancelGoal('${key}')" title="Bekor qilish">✕</button>
+    <div class="goal-edit-row" id="goalEdit_${fullId}" hidden>
+      <input type="number" id="goalInput_${fullId}" min="0" step="1000" placeholder="Yangi limit" style="color:var(${color})" onkeydown="if(event.key==='Enter'){event.preventDefault();applyGoal('${key}','${suffix}');}if(event.key==='Escape'){cancelGoal('${key}','${suffix}');}" />
+      <button class="btn btn-primary" style="padding:6px 14px;min-height:36px;" onclick="applyGoal('${key}','${suffix}')" title="Saqlash">✓</button>
+      <button class="btn btn-ghost" style="padding:6px 14px;min-height:36px;" onclick="cancelGoal('${key}','${suffix}')" title="Bekor qilish">✕</button>
     </div>`;
 }
-function openGoalEdit(key) {
-  document.getElementById('goalEdit_'+key).hidden = false;
-  const inp = document.getElementById('goalInput_'+key);
-  inp.value = goals[key];
-  inp.focus();
+function openGoalEdit(key, suffix = '') {
+  const fullId = suffix ? `${key}_${suffix}` : key;
+  const row = document.getElementById('goalEdit_' + fullId);
+  const inp = document.getElementById('goalInput_' + fullId);
+  if (row) row.hidden = false;
+  if (inp) {
+    inp.value = goals[key] || '';
+    inp.focus();
+    inp.select();
+  }
 }
-function cancelGoal(key) { document.getElementById('goalEdit_'+key).hidden = true; }
-function applyGoal(key) {
-  const val = parseInt(document.getElementById('goalInput_'+key).value);
+function cancelGoal(key, suffix = '') {
+  const fullId = suffix ? `${key}_${suffix}` : key;
+  const row = document.getElementById('goalEdit_' + fullId);
+  if (row) row.hidden = true;
+}
+function applyGoal(key, suffix = '') {
+  const fullId = suffix ? `${key}_${suffix}` : key;
+  const inp = document.getElementById('goalInput_' + fullId);
+  if (!inp) return;
+  const val = parseInt(inp.value, 10);
   if (val > 0) { 
     goals[key] = val; 
     saveGoals(); 
     showToast("Maqsad yangilandi ✓");
   }
-  cancelGoal(key);
+  cancelGoal(key, suffix);
   renderTab(currentTab);
+}
+
+// ── auth ──────────────────────────────────────────────────────────────
+const authScreen = document.getElementById('authScreen');
+const mainApp = document.getElementById('mainApp');
+const authForm = document.getElementById('authForm');
+const authError = document.getElementById('authError');
+const authSubmit = document.getElementById('authSubmit');
+const authName = document.getElementById('auth-name');
+const authEmail = document.getElementById('auth-email');
+const authPass = document.getElementById('auth-pass');
+const authPass2 = document.getElementById('auth-pass2');
+const emailHint = document.getElementById('emailHint');
+const passHint = document.getElementById('passHint');
+const pass2Hint = document.getElementById('pass2Hint');
+const forgotPassBtn = document.getElementById('forgotPassBtn');
+const googleSignInBtn = document.getElementById('googleSignInBtn');
+const authExtras = document.getElementById('authExtras');
+let authMode = 'login';
+
+function clearAuthHints() {
+  if (emailHint) emailHint.textContent = '';
+  if (passHint) passHint.textContent = '';
+  if (pass2Hint) pass2Hint.textContent = '';
+  authEmail.classList.remove('invalid');
+  authPass.classList.remove('invalid');
+  if (authPass2) authPass2.classList.remove('invalid');
+}
+
+function setAuthMode(mode) {
+  authMode = mode;
+  const isReg = mode === 'register';
+  document.getElementById('authLoginTab').classList.toggle('active', !isReg);
+  document.getElementById('authRegisterTab').classList.toggle('active', isReg);
+  document.getElementById('nameField').hidden = !isReg;
+  document.getElementById('confirmField').hidden = !isReg;
+  if (authExtras) authExtras.hidden = isReg;
+  authPass.autocomplete = isReg ? 'new-password' : 'current-password';
+  authSubmit.textContent = isReg ? "Ro‘yxatdan o‘tish" : 'Kirish';
+  authError.textContent = '';
+  clearAuthHints();
+}
+document.getElementById('authLoginTab').addEventListener('click', () => setAuthMode('login'));
+document.getElementById('authRegisterTab').addEventListener('click', () => setAuthMode('register'));
+
+// Real-time validation
+authEmail.addEventListener('input', () => {
+  const val = authEmail.value.trim();
+  if (val && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
+    authEmail.classList.add('invalid');
+    if (emailHint) emailHint.textContent = 'Elektron pochta manzili to‘g‘ri kiritilmagan';
+  } else {
+    authEmail.classList.remove('invalid');
+    if (emailHint) emailHint.textContent = '';
+  }
+});
+
+authPass.addEventListener('input', () => {
+  if (authMode === 'register' && authPass.value && authPass.value.length < 6) {
+    authPass.classList.add('invalid');
+    if (passHint) passHint.textContent = 'Kamida 6 ta belgi kiriting';
+  } else {
+    authPass.classList.remove('invalid');
+    if (passHint) passHint.textContent = '';
+  }
+  if (authMode === 'register' && authPass2.value) {
+    validatePassMatch();
+  }
+});
+
+if (authPass2) {
+  authPass2.addEventListener('input', validatePassMatch);
+}
+function validatePassMatch() {
+  if (authMode === 'register' && authPass2.value && authPass.value !== authPass2.value) {
+    authPass2.classList.add('invalid');
+    if (pass2Hint) pass2Hint.textContent = 'Parollar bir-biriga mos kelmadi';
+    return false;
+  } else {
+    authPass2.classList.remove('invalid');
+    if (pass2Hint) pass2Hint.textContent = '';
+    return true;
+  }
+}
+
+// Password reset
+if (forgotPassBtn) {
+  forgotPassBtn.addEventListener('click', async () => {
+    const email = authEmail.value.trim();
+    if (!email) {
+      authError.textContent = 'Parolni tiklash uchun avval elektron pochtangizni kiriting.';
+      authEmail.focus();
+      return;
+    }
+    try {
+      await auth.sendPasswordResetEmail(email);
+      showToast('Parolni tiklash havolasi emailingizga yuborildi ✉️');
+      authError.textContent = '';
+    } catch (err) {
+      authError.textContent = authMessage(err.code);
+    }
+  });
+}
+
+// Google Sign In
+if (googleSignInBtn) {
+  googleSignInBtn.addEventListener('click', async () => {
+    authError.textContent = '';
+    const provider = new firebase.auth.GoogleAuthProvider();
+    try {
+      await auth.signInWithPopup(provider);
+    } catch (err) {
+      if (err.code !== 'auth/popup-closed-by-user') {
+        authError.textContent = authMessage(err.code);
+      }
+    }
+  });
+}
+
+function authMessage(code) {
+  const map = {
+    'auth/email-already-in-use': 'Bu pochta allaqachon ro‘yxatdan o‘tgan.',
+    'auth/invalid-email': 'Email manzili noto‘g‘ri.',
+    'auth/weak-password': 'Parol kamida 6 belgidan iborat bo‘lishi kerak.',
+    'auth/user-not-found': 'Hisob topilmadi. Avval ro‘yxatdan o‘ting.',
+    'auth/wrong-password': 'Parol noto‘g‘ri.',
+    'auth/invalid-credential': 'Email yoki parol noto‘g‘ri.',
+    'auth/too-many-requests': 'Juda ko‘p urinish. Keyinroq qayta urinib ko‘ring.',
+    'auth/network-request-failed': 'Internetga ulanib bo‘lmadi.',
+    'auth/operation-not-allowed': 'Firebase Console’da bu usulni yoqing.',
+    'auth/popup-blocked': 'Brauzer pop-up oynani blokladi. Ruxsat bering.',
+    'auth/configuration-not-found': 'Firebase Console’da Authentication (Email/Password) xizmati yoqilmagan. Console > Build > Authentication bo‘limidan yoqing.'
+  };
+  return map[code] || 'Kirishda xatolik. Qayta urinib ko‘ring.';
+}
+
+authForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  authError.textContent = '';
+  clearAuthHints();
+  const email = authEmail.value.trim();
+  const password = authPass.value;
+  if (!email || !password) return;
+  if (authMode === 'register') {
+    if (password.length < 6) { authError.textContent = authMessage('auth/weak-password'); return; }
+    if (password !== authPass2.value) { authError.textContent = 'Parollar mos kelmadi.'; return; }
+  }
+  authSubmit.disabled = true;
+  try {
+    if (authMode === 'register') {
+      const cred = await auth.createUserWithEmailAndPassword(email, password);
+      const name = authName.value.trim();
+      if (name) await cred.user.updateProfile({ displayName: name });
+    } else {
+      await auth.signInWithEmailAndPassword(email, password);
+    }
+  } catch (err) {
+    console.error('Auth error details:', err);
+    const friendly = authMessage(err.code);
+    authError.textContent = err.code ? `${friendly} (${err.code})` : (err.message || friendly);
+  } finally {
+    authSubmit.disabled = false;
+  }
+});
+
+document.getElementById('logoutBtn').addEventListener('click', () => {
+  auth.signOut().catch(() => {});
+});
+
+function showLoggedOut() {
+  stopListener();
+  currentUser = null;
+  initialized = false;
+  transactions = [];
+  recurring = [];
+  dismissedAlerts.clear();
+  currentMonthOffset = 0;
+  goals = { ...DEFAULT_GOALS };
+  mainApp.hidden = true;
+  authScreen.hidden = false;
+  document.getElementById('userLabel').textContent = '';
+  setStatus(false);
+}
+
+async function showLoggedIn(user) {
+  currentUser = user;
+  currentMonthOffset = 0;
+  authScreen.hidden = true;
+  mainApp.hidden = false;
+  const label = user.displayName || user.email || '';
+  document.getElementById('userLabel').textContent = label;
+  document.getElementById('userLabel').parentElement.title = user.email || '';
+  authError.textContent = '';
+  await loadGoals();
+  await loadRecurring();
+  await applyRecurring();
+  switchTab(currentTab);
+  startListener();
 }
 
 // ── renderers ─────────────────────────────────────────────────────────
@@ -520,6 +1275,7 @@ function renderDaily() {
   const expenses=sum(txs,'expense'), income=sum(txs,'income'), charity=sum(txs,'charity'), savings=sum(txs,'savings');
   const goalPct = goals.expense>0 ? Math.min(100,Math.round(expenses/goals.expense*100)) : 0;
   return `
+    ${renderAlerts('daily')}
     <div class="tiles">
       <div class="tile ${expenses>goals.expense?'danger':''}">
         <div class="tile-label">Bugungi xarajat</div>
@@ -535,7 +1291,7 @@ function renderDaily() {
         <span class="card-title">Oylik xarajat limiti</span>
         <div style="display:flex;gap:8px;align-items:center">
           <span style="font-size:13px;color:var(--muted)">${fmt(goals.expense)}</span>
-          <button class="btn-edit" onclick="openGoalEdit('expense')">✏️ O'zgartirish</button>
+          <button class="btn-edit" onclick="openGoalEdit('expense','daily')">✏️ O'zgartirish</button>
         </div>
       </div>
       <div class="card-body">
@@ -543,7 +1299,7 @@ function renderDaily() {
           <div class="progress-header"><span>Bugun sarflandi</span><span>${fmt(expenses)} / ${fmt(goals.expense)} (${goalPct}%)</span></div>
           <div class="progress-track"><div class="progress-fill" style="width:${goalPct}%;background:${goalPct>=80?'var(--danger)':'var(--accent)'}"></div></div>
         </div>
-        ${goalEditHTML('expense','Xarajat limiti','--danger')}
+        ${goalEditHTML('expense','Xarajat limiti','--danger','daily')}
       </div>
     </div>
     ${renderTxCard(txs,"Bugungi tranzaksiyalar")}`;
@@ -583,19 +1339,40 @@ function renderWeekly() {
 }
 
 function renderMonthly() {
-  const txs=filterTx('monthly');
-  const expenses=sum(txs,'expense'), income=sum(txs,'income'), charity=sum(txs,'charity'), savings=sum(txs,'savings');
-  const net=income-expenses-charity-savings;
+  const txs = filterTx('monthly');
+  const expenses = sum(txs,'expense'), income = sum(txs,'income'), charity = sum(txs,'charity'), savings = sum(txs,'savings');
+  const net = income - expenses - charity - savings;
+
+  const targetDate = getSelectedMonthDate();
+  const mName = UZ_MONTHS[targetDate.getMonth()];
+  const yNum = targetDate.getFullYear();
+  const isCurrentMonth = currentMonthOffset === 0;
+
+  const monthNavHTML = `
+    <div class="month-nav-bar">
+      <div class="month-nav-title">
+        <span>📅 ${mName} ${yNum}</span>
+        ${isCurrentMonth ? '<span class="current-badge">Joriy oy</span>' : ''}
+      </div>
+      <div class="month-nav-controls">
+        <button class="month-nav-btn" onclick="changeMonthOffset(-1)" title="Oldingi oy">◀ Oldingi oy</button>
+        ${!isCurrentMonth ? '<button class="month-nav-today-btn" onclick="resetMonthOffset()">Joriy oyga qaytish</button>' : ''}
+        <button class="month-nav-btn" onclick="changeMonthOffset(1)" ${isCurrentMonth ? 'disabled' : ''} title="Keyingi oy">Keyingi oy ▶</button>
+      </div>
+    </div>`;
+
   const cats={};
   txs.filter(t=>t.type==='expense').forEach(t=>{cats[t.cat]=(cats[t.cat]||0)+t.amount;});
   const catRows=Object.entries(cats).sort((a,b)=>b[1]-a[1]).map(([cat,amt])=>{
     const pct=expenses>0?Math.min(100,Math.round(amt/expenses*100)):0;
     const catName = cat==='food'?'Oziq-ovqat':cat==='transport'?'Transport':cat==='bills'?'Kommunal':cat==='health'?'Salomatlik':cat==='entertainment'?'Ko\'ngil ochar':cat==='shopping'?'Xarid':cat.charAt(0).toUpperCase()+cat.slice(1);
     return `<div class="progress-row"><div class="progress-header"><span>${catIcon(cat)} ${catName}</span><span>${fmt(amt)} <span style="color:var(--muted)">(${pct}%)</span></span></div><div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div></div>`;
-  }).join('')||'<div class="empty"><div class="empty-icon">📊</div>Hali xarajat yo\'q.</div>';
+  }).join('')||`<div class="empty"><div class="empty-icon">📊</div>${mName} oyida xarajatlar yo'q.</div>`;
   const dangerPct=income>0?Math.min(100,Math.round(expenses/income*100)):0;
   const expGoalPct=goals.expense>0?Math.min(100,Math.round(expenses/goals.expense*100)):0;
   return `
+    ${renderAlerts('monthly')}
+    ${monthNavHTML}
     <div class="tiles">
       <div class="tile ${expenses/Math.max(income,1)>.8?'danger':''}"><div class="tile-label">Oylik xarajat</div><div class="tile-value">${fmt(expenses)}</div><div class="tile-sub">Daromadning ${dangerPct}%i</div></div>
       <div class="tile accent"><div class="tile-label">Daromad</div><div class="tile-value">${fmt(income)}</div></div>
@@ -607,7 +1384,7 @@ function renderMonthly() {
         <span class="card-title">Oylik xarajat limiti</span>
         <div style="display:flex;gap:8px;align-items:center">
           <span style="font-size:13px;color:var(--muted)">${fmt(goals.expense)}</span>
-          <button class="btn-edit" onclick="openGoalEdit('expense')">✏️ O'zgartirish</button>
+          <button class="btn-edit" onclick="openGoalEdit('expense','monthly')">✏️ O'zgartirish</button>
         </div>
       </div>
       <div class="card-body">
@@ -615,11 +1392,12 @@ function renderMonthly() {
           <div class="progress-header"><span>Sarflandi</span><span>${fmt(expenses)} / ${fmt(goals.expense)} (${expGoalPct}%)</span></div>
           <div class="progress-track"><div class="progress-fill" style="width:${expGoalPct}%;background:${expGoalPct>=80?'var(--danger)':'var(--accent)'}"></div></div>
         </div>
-        ${goalEditHTML('expense','Xarajat limiti','--danger')}
+        ${goalEditHTML('expense','Xarajat limiti','--danger','monthly')}
       </div>
     </div>
-    <div class="card"><div class="card-header"><span class="card-title">Kategoriya bo'yicha</span></div><div class="card-body">${catRows}</div></div>
-    ${renderTxCard(txs.slice(0,20),'So\'nggi tranzaksiyalar')}`;
+    <div class="card"><div class="card-header"><span class="card-title">Kategoriya bo'yicha (${mName})</span></div><div class="card-body">${catRows}</div></div>
+    <!-- Takroriy tranzaksiyalar: kod saqlangan, vaqtincha yashirilgan: ${/* renderRecurringCard() */ ''} -->
+    ${renderTxCard(txs.slice(0,20), mName + ' oyidagi tranzaksiyalar')}`;
 }
 
 function renderCharity() {
@@ -702,6 +1480,36 @@ function renderSavings() {
     ${renderTxCard(all,'Barcha jamg\'armalar',true)}`;
 }
 
+// ── recurring card renderer ──────────────────────────────────────────
+function renderRecurringCard() {
+  const items = recurring.map(r => `
+    <div class="recurring-item">
+      <div class="tx-icon" style="${typeBg(r.type)}">${catIcon(r.cat)}</div>
+      <div class="ri-info">
+        <div class="ri-name">${esc(r.desc)}</div>
+        <div class="ri-meta">Har oyning ${r.dayOfMonth || 1}-kuni · ${TYPE_LABELS[r.type] || r.type}</div>
+      </div>
+      <div class="ri-amount ${r.type==='income'?'in':'out'}">${r.type==='income'?'+':'-'}${fmt(r.amount)}</div>
+      <div class="ri-actions">
+        <label class="recurring-toggle" title="${r.enabled ? 'Faol' : 'Nofaol'}">
+          <input type="checkbox" ${r.enabled ? 'checked' : ''} onchange="toggleRecurring('${r.id}', this.checked)" />
+        </label>
+        <button class="ri-del" onclick="deleteRecurring('${r.id}')" title="O'chirish">✕</button>
+      </div>
+    </div>`).join('');
+  const empty = !recurring.length ? '<div class="empty"><div class="empty-icon">🔄</div>Hali takroriy tranzaksiya yo\'q.</div>' : '';
+  return `
+    <div class="card recurring-card">
+      <div class="card-header">
+        <span class="card-title">🔄 Takroriy tranzaksiyalar</span>
+        <button class="btn-edit" onclick="openRecurringModal()">+ Qo'shish</button>
+      </div>
+      <div class="card-body">
+        ${items || empty}
+      </div>
+    </div>`;
+}
+
 function renderTxCard(txs, title, showAll=false) {
   const list=showAll?txs:txs.slice(0,10);
   if(!list.length) return `<div class="card"><div class="card-header"><span class="card-title">${title}</span></div><div class="empty"><div class="empty-icon">💸</div>Hali tranzaksiya yo'q. <strong>+ Yangi yozuv</strong> tugmasini bosing.</div></div>`;
@@ -747,17 +1555,49 @@ const fType   = document.getElementById('f-type');
 const fCat    = document.getElementById('f-cat');
 const fDate   = document.getElementById('f-date');
 
-function openModal() {
-  fDate.value=new Date().toISOString().slice(0,10);
+function getTodayDateStr() {
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = String(now.getMonth() + 1).padStart(2, '0');
+  const d = String(now.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
+function openModal(defaultType = 'expense') {
+  const todayStr = getTodayDateStr();
+  fDate.value = todayStr;
+  fDate.max = todayStr; // Prevent picking future dates
   fDesc.value=''; fAmount.value='';
-  fType.value='expense'; fCat.value='food';
+  if (defaultType === 'charity') {
+    fType.value = 'charity';
+    fCat.value = 'charity';
+  } else if (defaultType === 'savings') {
+    fType.value = 'savings';
+    fCat.value = 'savings';
+  } else if (defaultType === 'income') {
+    fType.value = 'income';
+    fCat.value = 'income';
+  } else {
+    fType.value = 'expense';
+    fCat.value = 'food';
+  }
   modal.hidden=false; fDesc.focus();
 }
 function closeModal() { modal.hidden=true; }
 
-document.getElementById('openAddBtn').addEventListener('click',openModal);
+document.getElementById('openAddBtn').addEventListener('click',()=>openModal());
 document.getElementById('cancelAddBtn').addEventListener('click',closeModal);
 modal.addEventListener('click',e=>{if(e.target===modal)closeModal();});
+
+// Ayat modal events
+const ayatModal = document.getElementById('ayatModal');
+const closeAyatBtn = document.getElementById('closeAyatBtn');
+if (closeAyatBtn) closeAyatBtn.addEventListener('click', closeAyatModal);
+if (ayatModal) {
+  ayatModal.addEventListener('click', e => {
+    if (e.target === ayatModal) closeAyatModal();
+  });
+}
 
 // Category and Type synchronization:
 // If matching (charity, savings, income), both become the same.
@@ -804,15 +1644,106 @@ document.getElementById('confirmAddBtn').addEventListener('click',()=>{
   const amount=parseFloat(fAmount.value);
   if(!desc){fDesc.focus();return;}
   if(!amount||amount<=0){fAmount.focus();return;}
-  addTx({desc,amount,type:fType.value,cat:fCat.value,date:fDate.value||new Date().toISOString().slice(0,10)});
+  const chosenDate = fDate.value || getTodayDateStr();
+  const todayStr = getTodayDateStr();
+  if (chosenDate > todayStr) {
+    showToast('⚠️ Kelajak sanasini tanlash mumkin emas!');
+    fDate.focus();
+    return;
+  }
+  addTx({desc,amount,type:fType.value,cat:fCat.value,date:chosenDate});
   closeModal();
   showToast('Saqlandi ✓');
 });
 
 document.addEventListener('keydown',e=>{
-  if(e.key==='Escape')closeModal();
-  if((e.metaKey||e.ctrlKey)&&e.key==='n'){e.preventDefault();openModal();}
+  if(e.key==='Escape') {
+    closeModal();
+    closeRecurringModal();
+    closeAyatModal();
+  }
+  if(currentUser && (e.metaKey||e.ctrlKey)&&e.key==='n'){e.preventDefault();openModal();}
 });
+
+// ── recurring modal ───────────────────────────────────────────────────
+const recurringModal = document.getElementById('recurringModal');
+const rDesc = document.getElementById('r-desc');
+const rAmount = document.getElementById('r-amount');
+const rType = document.getElementById('r-type');
+const rCat = document.getElementById('r-cat');
+const rDay = document.getElementById('r-day');
+
+function openRecurringModal() {
+  if (!recurringModal) return;
+  rDesc.value = '';
+  rAmount.value = '';
+  rType.value = 'income';
+  rCat.value = 'income';
+  rDay.value = '1';
+  recurringModal.hidden = false;
+  rDesc.focus();
+}
+
+function closeRecurringModal() {
+  if (recurringModal) recurringModal.hidden = true;
+}
+
+if (document.getElementById('cancelRecurringBtn')) {
+  document.getElementById('cancelRecurringBtn').addEventListener('click', closeRecurringModal);
+}
+if (recurringModal) {
+  recurringModal.addEventListener('click', e => {
+    if (e.target === recurringModal) closeRecurringModal();
+  });
+}
+
+if (rType && rCat) {
+  rType.addEventListener('change', () => {
+    const chosen = rType.value;
+    if (MATCHED_MODES.includes(chosen)) {
+      rCat.value = chosen;
+    } else if (chosen === 'expense' && !EXPENSE_CATEGORIES.includes(rCat.value)) {
+      rCat.value = 'food';
+    }
+  });
+  rCat.addEventListener('change', () => {
+    const chosen = rCat.value;
+    if (MATCHED_MODES.includes(chosen)) {
+      rType.value = chosen;
+    } else if (EXPENSE_CATEGORIES.includes(chosen)) {
+      rType.value = 'expense';
+    }
+  });
+}
+
+[rDesc, rAmount, rDay].forEach(inp => {
+  if (!inp) return;
+  inp.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      document.getElementById('confirmRecurringBtn').click();
+    }
+  });
+});
+
+if (document.getElementById('confirmRecurringBtn')) {
+  document.getElementById('confirmRecurringBtn').addEventListener('click', () => {
+    const desc = rDesc.value.trim();
+    const amount = parseFloat(rAmount.value);
+    const day = parseInt(rDay.value) || 1;
+    if (!desc) { rDesc.focus(); return; }
+    if (!amount || amount <= 0) { rAmount.focus(); return; }
+    const dayOfMonth = Math.min(28, Math.max(1, day));
+    addRecurring({
+      desc,
+      amount,
+      type: rType.value,
+      cat: rCat.value,
+      dayOfMonth
+    });
+    closeRecurringModal();
+  });
+}
 
 // ── theme ──────────────────────────────────────────────────────────────
 const themeBtn=document.getElementById('themeBtn');
@@ -833,7 +1764,10 @@ applyTheme();
 
 // ── start ──────────────────────────────────────────────────────────────
 switchTab('daily');
-startListener();
+auth.onAuthStateChanged((user) => {
+  if (user) showLoggedIn(user);
+  else showLoggedOut();
+});
 </script>
 </body>
 </html>
